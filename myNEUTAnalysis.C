@@ -202,9 +202,9 @@ void myNEUTAnalysis::Loop() {
 			    && ProtonCosTheta > ArrayNBinsProtonCosTheta[0]
 			    && ProtonCosTheta < ArrayNBinsProtonCosTheta[NBinsProtonCosTheta]
 			    
-			    && ECal > ArrayNBinsECal[0] && ECal < ArrayNBinsECal[NBinsECal]
-			    && EQE > ArrayNBinsEQE[0] && EQE < ArrayNBinsEQE[NBinsEQE]
-			    && TrueQ2 > ArrayNBinsQ2[0] && TrueQ2 < ArrayNBinsQ2[NBinsQ2]			    
+//			    && ECal > ArrayNBinsECal[0] && ECal < ArrayNBinsECal[NBinsECal]
+//			    && EQE > ArrayNBinsEQE[0] && EQE < ArrayNBinsEQE[NBinsEQE]
+//			    && TrueQ2 > ArrayNBinsQ2[0] && TrueQ2 < ArrayNBinsQ2[NBinsQ2]			    
 
 			) {
 			
