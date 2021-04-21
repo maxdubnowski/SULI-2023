@@ -19,10 +19,9 @@
 
 #include "../myClasses/Tools.h"
 #include "../myClasses/STV_Tools.h"
-#include "../../../../../Secondary_Code/myFunctions.cpp"
+#include "../../../../../Secondary_Code/mySimFunctions.cpp"
 
 using namespace std;
-using namespace Constants;
 
 void myNEUTAnalysis::Loop() {
 
