@@ -126,9 +126,15 @@ void myNEUTAnalysis::Loop() {
 
 			}
 
+			if (pdg[i] == NeutralPionPdg)  {
+
+				NeutralPionTagging ++;
+
+			}
+
 		} // End of the loop over the final state particles
 
-		if ( ProtonTagging != 1 || ChargedPionTagging > 0 || MuonTagging !=1) { continue; }
+		if ( ProtonTagging != 1 || ChargedPionTagging != 0 || NeutralPionTagging != 0 || MuonTagging !=1) { continue; }
 
 		// ----------------------------------------------------------------------------------------------------------------------------------
 
