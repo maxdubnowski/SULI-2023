@@ -53,9 +53,20 @@ void myNEUTAnalysis::Loop() {
 	TH1D* TrueDeltaAlphaTPlot = new TH1D("TrueDeltaAlphaTPlot",LabelXAxisDeltaAlphaT,NBinsDeltaAlphaT,ArrayNBinsDeltaAlphaT);
 	TH1D* TrueDeltaPhiTPlot = new TH1D("TrueDeltaPhiTPlot",LabelXAxisDeltaPhiT,NBinsDeltaPhiT,ArrayNBinsDeltaPhiT);	
 
-	TH1D* TruekMissPlot = new TH1D("TruekMissPlot",LabelXAxiskMiss,NBinskMiss,ArrayNBinskMiss);
-	TH1D* TruePMissMinusPlot = new TH1D("TruePMissMinusPlot",LabelXAxisPMissMinus,NBinsPMissMinus,ArrayNBinsPMissMinus);
-	TH1D* TruePMissPlot = new TH1D("TruePMissPlot",LabelXAxisPMiss,NBinsPMiss,ArrayNBinsPMiss);
+	TH1D* TrueCCQEMuonMomentumPlot = new TH1D("TrueCCQEMuonMomentumPlot",LabelXAxisMuonMomentum,CCQENBinsMuonMomentum,CCQEArrayNBinsMuonMomentum);
+	TH1D* TrueCCQEMuonPhiPlot = new TH1D("TrueCCQEMuonPhiPlot",LabelXAxisMuonPhi,CCQENBinsMuonPhi,CCQEArrayNBinsMuonPhi);
+	TH1D* TrueCCQEMuonCosThetaPlot = new TH1D("TrueCCQEMuonCosThetaPlot",LabelXAxisMuonCosTheta,CCQENBinsMuonCosTheta,CCQEArrayNBinsMuonCosTheta);	
+
+	TH1D* TrueCCQEProtonMomentumPlot = new TH1D("TrueCCQEProtonMomentumPlot",LabelXAxisProtonMomentum,CCQENBinsProtonMomentum,CCQEArrayNBinsProtonMomentum);
+	TH1D* TrueCCQEProtonPhiPlot = new TH1D("TrueCCQEProtonPhiPlot",LabelXAxisProtonPhi,CCQENBinsProtonPhi,CCQEArrayNBinsProtonPhi);
+	TH1D* TrueCCQEProtonCosThetaPlot = new TH1D("TrueCCQEProtonCosThetaPlot",LabelXAxisProtonCosTheta,CCQENBinsProtonCosTheta,CCQEArrayNBinsProtonCosTheta);
+
+	TH1D* TrueCCQEECalPlot = new TH1D("TrueCCQEECalPlot",LabelXAxisECal,CCQENBinsECal,CCQEArrayNBinsECal);
+	TH1D* TrueCCQEQ2Plot = new TH1D("TrueCCQEQ2Plot",LabelXAxisQ2,CCQENBinsQ2,CCQEArrayNBinsQ2);	
+
+	// TH1D* TruekMissPlot = new TH1D("TruekMissPlot",LabelXAxiskMiss,NBinskMiss,ArrayNBinskMiss);
+	// TH1D* TruePMissMinusPlot = new TH1D("TruePMissMinusPlot",LabelXAxisPMissMinus,NBinsPMissMinus,ArrayNBinsPMissMinus);
+	// TH1D* TruePMissPlot = new TH1D("TruePMissPlot",LabelXAxisPMiss,NBinsPMiss,ArrayNBinsPMiss);
 
 	// For now and until box opening
 	int NBins2DAnalysis = 4;
@@ -183,9 +194,9 @@ void myNEUTAnalysis::Loop() {
 		double EQE = stv_tool.ReturnEQE();
 		double TrueQ2 = stv_tool.ReturnQ2();	
 
-		double TruekMiss = stv_tool.ReturnkMiss();
-		double TruePMissMinus = stv_tool.ReturnPMissMinus();
-		double TrueMissMomentum = stv_tool.ReturnPMiss();
+		// double TruekMiss = stv_tool.ReturnkMiss();
+		// double TruePMissMinus = stv_tool.ReturnPMissMinus();
+		// double TrueMissMomentum = stv_tool.ReturnPMiss();
 
 		// ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -229,9 +240,9 @@ void myNEUTAnalysis::Loop() {
 				TrueEQEPlot->Fill(EQE,weight);				
 				TrueQ2Plot->Fill(TrueQ2,weight);
 
-				TruekMissPlot->Fill(TruekMiss,weight);
-				TruePMissMinusPlot->Fill(TruePMissMinus,weight);
-				TruePMissPlot->Fill(TrueMissMomentum,weight);
+				// TruekMissPlot->Fill(TruekMiss,weight);
+				// TruePMissMinusPlot->Fill(TruePMissMinus,weight);
+				// TruePMissPlot->Fill(TrueMissMomentum,weight);
 
 				// 2D Analysis
 		
@@ -243,6 +254,38 @@ void myNEUTAnalysis::Loop() {
 				if (Mode == 2) { CounterSTVlikeMECEventsPassedSelection++; } // MEC
 				if (Mode == 11 || Mode == 12 || Mode == 13) { CounterSTVlikeRESEventsPassedSelection++; } // RES
 				if (Mode == 26) { CounterSTVlikeDISEventsPassedSelection++; } // DIS
+
+				if (		
+					// CCQElike measurement
+						
+					PTmissMomentum < 0.35
+					&& TMath::Abs(DeltaPhiProtonMuon - 180) < 35
+					&& TMath::Abs(DeltaThetaProtonMuon - 90) < 55
+
+					&& MuonMomentum > CCQEArrayNBinsMuonMomentum[0]  
+					&& ProtonMomentum > CCQEArrayNBinsProtonMomentum[0]					
+					&& MuonMomentum < CCQEArrayNBinsMuonMomentum[CCQENBinsMuonMomentum]  
+					&& ProtonMomentum < CCQEArrayNBinsProtonMomentum[CCQENBinsProtonMomentum]
+					
+					&& MuonCosTheta > CCQEArrayNBinsMuonCosTheta[0]
+					&& MuonCosTheta < CCQEArrayNBinsMuonCosTheta[CCQENBinsMuonCosTheta]
+					&& ProtonCosTheta > CCQEArrayNBinsProtonCosTheta[0]
+					&& ProtonCosTheta < CCQEArrayNBinsProtonCosTheta[CCQENBinsProtonCosTheta]
+
+				) {
+
+					TrueCCQEMuonMomentumPlot->Fill(MuonMomentum,weight);
+					TrueCCQEMuonPhiPlot->Fill(MuonPhi,weight);
+					TrueCCQEMuonCosThetaPlot->Fill(MuonCosTheta,weight);
+
+					TrueCCQEProtonMomentumPlot->Fill(ProtonMomentum,weight);
+					TrueCCQEProtonPhiPlot->Fill(ProtonPhi,weight);
+					TrueCCQEProtonCosThetaPlot->Fill(ProtonCosTheta,weight);	
+
+					TrueCCQEECalPlot->Fill(ECal,weight);
+					TrueCCQEQ2Plot->Fill(TrueQ2,weight);								
+
+				}				
 
 			}
 			
@@ -291,14 +334,25 @@ void myNEUTAnalysis::Loop() {
 	Reweight(TrueECalPlot,ScalingFactor);
 	Reweight(TrueEQEPlot,ScalingFactor);	
 	Reweight(TrueQ2Plot,ScalingFactor);
+
+	Reweight(TrueCCQEMuonMomentumPlot,ScalingFactor);
+	Reweight(TrueCCQEMuonPhiPlot,ScalingFactor);
+	Reweight(TrueCCQEMuonCosThetaPlot,ScalingFactor);
+
+	Reweight(TrueCCQEProtonMomentumPlot,ScalingFactor);
+	Reweight(TrueCCQEProtonPhiPlot,ScalingFactor);
+	Reweight(TrueCCQEProtonCosThetaPlot,ScalingFactor);
+
+	Reweight(TrueCCQEECalPlot,ScalingFactor);
+	Reweight(TrueCCQEQ2Plot,ScalingFactor);	
 	
 	Reweight(TrueDeltaPTPlot,ScalingFactor);
 	Reweight(TrueDeltaAlphaTPlot,ScalingFactor);
 	Reweight(TrueDeltaPhiTPlot,ScalingFactor);
 
-	Reweight(TruekMissPlot,ScalingFactor);
-	Reweight(TruePMissPlot,ScalingFactor);
-	Reweight(TruePMissMinusPlot,ScalingFactor);
+	// Reweight(TruekMissPlot,ScalingFactor);
+	// Reweight(TruePMissPlot,ScalingFactor);
+	// Reweight(TruePMissMinusPlot,ScalingFactor);
 
 	Reweight2D(TrueCosThetaMuPmuPlot,ScalingFactor);
 	Reweight2D(TrueCosThetaPPpPlot,ScalingFactor);
