@@ -64,9 +64,15 @@ void myNEUTAnalysis::Loop() {
 	TH1D* TrueCCQEECalPlot = new TH1D("TrueCCQEECalPlot",LabelXAxisECal,CCQENBinsECal,CCQEArrayNBinsECal);
 	TH1D* TrueCCQEQ2Plot = new TH1D("TrueCCQEQ2Plot",LabelXAxisQ2,CCQENBinsQ2,CCQEArrayNBinsQ2);	
 
-	// TH1D* TruekMissPlot = new TH1D("TruekMissPlot",LabelXAxiskMiss,NBinskMiss,ArrayNBinskMiss);
-	// TH1D* TruePMissMinusPlot = new TH1D("TruePMissMinusPlot",LabelXAxisPMissMinus,NBinsPMissMinus,ArrayNBinsPMissMinus);
-	// TH1D* TruePMissPlot = new TH1D("TruePMissPlot",LabelXAxisPMiss,NBinsPMiss,ArrayNBinsPMiss);
+	TH1D* TruekMissPlot = new TH1D("TruekMissPlot",LabelXAxiskMiss,NBinskMiss,ArrayNBinskMiss);
+	TH1D* TruePMissMinusPlot = new TH1D("TruePMissMinusPlot",LabelXAxisPMissMinus,NBinsPMissMinus,ArrayNBinsPMissMinus);
+	TH1D* TruePMissPlot = new TH1D("TruePMissPlot",LabelXAxisPMiss,NBinsPMiss,ArrayNBinsPMiss);
+
+	TH1D* TrueDeltaPLPlot = new TH1D("TrueDeltaPLPlot",LabelXAxisDeltaPL,NBinsDeltaPL,ArrayNBinsDeltaPL);
+	TH1D* TrueDeltaPnPlot = new TH1D("TrueDeltaPnPlot",LabelXAxisDeltaPn,NBinsDeltaPn,ArrayNBinsDeltaPn);
+	TH1D* TrueDeltaPtxPlot = new TH1D("TrueDeltaPtxPlot",LabelXAxisDeltaPtx,NBinsDeltaPtx,ArrayNBinsDeltaPtx);
+	TH1D* TrueDeltaPtyPlot = new TH1D("TrueDeltaPtyPlot",LabelXAxisDeltaPty,NBinsDeltaPty,ArrayNBinsDeltaPty);
+	TH1D* TrueAPlot = new TH1D("TrueAPlot",LabelXAxisA,NBinsA,ArrayNBinsA);
 
 	// For now and until box opening
 	int NBins2DAnalysis = 4;
@@ -89,6 +95,10 @@ void myNEUTAnalysis::Loop() {
 	int CounterSTVlikeRESEventsPassedSelection = 0;
 	int CounterSTVlikeDISEventsPassedSelection = 0;
 
+	// ----------------------------------------------------------------------------------------------------------------------------------------
+
+	Tools tools;
+
 	// ---------------------------------------------------------------------------------------------------------------------------------	
 	
 	for (Long64_t jentry=0; jentry<nentries;jentry++) {
@@ -109,7 +119,7 @@ void myNEUTAnalysis::Loop() {
 
 		// ---------------------------------------------------------------------------------------------------------------------------------
 
-		int ProtonTagging = 0, ChargedPionTagging = 0, NeutralPionTagging = 0, ElectronTagging = 0, GammaTagging = 0, MuonTagging = 0;
+		int ProtonTagging = 0, ChargedPionTagging = 0, NeutralPionTagging = 0, ElectronTagging = 0, GammaTagging = 0, MuonTagging = 0, TrueHeavierMesonCounter = 0;
 		vector <int> ProtonID; ProtonID.clear();
 		vector <int> MuonID; MuonID.clear();		
 
@@ -143,9 +153,12 @@ void myNEUTAnalysis::Loop() {
 
 			}
 
+			if ( pdg[i] != NeutralPionPdg && fabs(pdg[i]) != AbsChargedPionPdg && tools.is_meson_or_antimeson(pdg[i]) ) { TrueHeavierMesonCounter++; }
+
 		} // End of the loop over the final state particles
 
 		if ( ProtonTagging != 1 || ChargedPionTagging != 0 || NeutralPionTagging != 0 || MuonTagging !=1) { continue; }
+		if ( TrueHeavierMesonCounter != 0 ) { continue; }
 
 		// ----------------------------------------------------------------------------------------------------------------------------------
 
@@ -194,9 +207,15 @@ void myNEUTAnalysis::Loop() {
 		double EQE = stv_tool.ReturnEQE();
 		double TrueQ2 = stv_tool.ReturnQ2();	
 
-		// double TruekMiss = stv_tool.ReturnkMiss();
-		// double TruePMissMinus = stv_tool.ReturnPMissMinus();
-		// double TrueMissMomentum = stv_tool.ReturnPMiss();
+		double TruekMiss = stv_tool.ReturnkMiss();
+		double TruePMissMinus = stv_tool.ReturnPMissMinus();
+		double TrueMissMomentum = stv_tool.ReturnPMiss();
+
+		double TruePL = stv_tool.ReturnPL();
+		double TruePn = stv_tool.ReturnPn();
+		double TruePtx = stv_tool.ReturnPtx();
+		double TruePty = stv_tool.ReturnPty();
+		double TrueA = stv_tool.ReturnA();
 
 		// ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -240,9 +259,15 @@ void myNEUTAnalysis::Loop() {
 				TrueEQEPlot->Fill(EQE,weight);				
 				TrueQ2Plot->Fill(TrueQ2,weight);
 
-				// TruekMissPlot->Fill(TruekMiss,weight);
-				// TruePMissMinusPlot->Fill(TruePMissMinus,weight);
-				// TruePMissPlot->Fill(TrueMissMomentum,weight);
+				TruekMissPlot->Fill(TruekMiss,weight);
+				TruePMissMinusPlot->Fill(TruePMissMinus,weight);
+				TruePMissPlot->Fill(TrueMissMomentum,weight);
+
+				TrueDeltaPLPlot->Fill(TruePL,weight);
+				TrueDeltaPnPlot->Fill(TruePn,weight);
+				TrueDeltaPtxPlot->Fill(TruePtx,weight);
+				TrueDeltaPtyPlot->Fill(TruePty,weight);
+				TrueAPlot->Fill(TrueA,weight);
 
 				// 2D Analysis
 		
