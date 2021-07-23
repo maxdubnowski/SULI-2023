@@ -40,6 +40,7 @@ void myNEUTAnalysis::Loop() {
 	TH1D* TrueMuonMomentumPlot = new TH1D("TrueMuonMomentumPlot",LabelXAxisMuonMomentum,NBinsMuonMomentum,ArrayNBinsMuonMomentum);
 	TH1D* TrueMuonPhiPlot = new TH1D("TrueMuonPhiPlot",LabelXAxisMuonPhi,NBinsMuonPhi,ArrayNBinsMuonPhi);
 	TH1D* TrueMuonCosThetaPlot = new TH1D("TrueMuonCosThetaPlot",LabelXAxisMuonCosTheta,NBinsMuonCosTheta,ArrayNBinsMuonCosTheta);
+	TH1D* TrueMuonCosThetaSingleBinPlot = new TH1D("TrueMuonCosThetaSingleBinPlot",LabelXAxisMuonCosTheta,1,-1.,1.);
 
 	TH1D* TrueProtonMomentumPlot = new TH1D("TrueProtonMomentumPlot",LabelXAxisProtonMomentum,NBinsProtonMomentum,ArrayNBinsProtonMomentum);
 	TH1D* TrueProtonPhiPlot = new TH1D("TrueProtonPhiPlot",LabelXAxisProtonPhi,NBinsProtonPhi,ArrayNBinsProtonPhi);
@@ -250,6 +251,7 @@ void myNEUTAnalysis::Loop() {
 				TrueMuonMomentumPlot->Fill(MuonMomentum,weight);
 				TrueMuonPhiPlot->Fill(MuonPhi,weight);
 				TrueMuonCosThetaPlot->Fill(MuonCosTheta,weight);
+				TrueMuonCosThetaSingleBinPlot->Fill(MuonCosTheta,weight);
 
 				TrueProtonMomentumPlot->Fill(ProtonMomentum,weight);
 				TrueProtonPhiPlot->Fill(ProtonPhi,weight);
