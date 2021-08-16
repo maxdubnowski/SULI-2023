@@ -353,6 +353,7 @@ void myNEUTAnalysis::Loop() {
 	Reweight(TrueMuonMomentumPlot,ScalingFactor);
 	Reweight(TrueMuonPhiPlot,ScalingFactor);
 	Reweight(TrueMuonCosThetaPlot,ScalingFactor);
+	Reweight(TrueMuonCosThetaSingleBinPlot,ScalingFactor);
 
 	Reweight(TrueProtonMomentumPlot,ScalingFactor);
 	Reweight(TrueProtonPhiPlot,ScalingFactor);
@@ -377,9 +378,15 @@ void myNEUTAnalysis::Loop() {
 	Reweight(TrueDeltaAlphaTPlot,ScalingFactor);
 	Reweight(TrueDeltaPhiTPlot,ScalingFactor);
 
-	// Reweight(TruekMissPlot,ScalingFactor);
-	// Reweight(TruePMissPlot,ScalingFactor);
-	// Reweight(TruePMissMinusPlot,ScalingFactor);
+	Reweight(TruekMissPlot,ScalingFactor);
+	Reweight(TruePMissPlot,ScalingFactor);
+	Reweight(TruePMissMinusPlot,ScalingFactor);
+
+	Reweight(TrueDeltaPLPlot,ScalingFactor);
+	Reweight(TrueDeltaPnPlot,ScalingFactor);
+	Reweight(TrueDeltaPtxPlot,ScalingFactor);
+	Reweight(TrueDeltaPtyPlot,ScalingFactor);
+	Reweight(TrueAPlot,ScalingFactor);
 
 	Reweight2D(TrueCosThetaMuPmuPlot,ScalingFactor);
 	Reweight2D(TrueCosThetaPPpPlot,ScalingFactor);
