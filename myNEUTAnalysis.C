@@ -19,9 +19,11 @@
 
 #include "../myClasses/Tools.h"
 #include "../myClasses/STV_Tools.h"
-#include "../../../../../Secondary_Code/mySimFunctions.cpp"
+#include "../myClasses/Util.h"
 
 using namespace std;
+
+//----------------------------------------//
 
 void myNEUTAnalysis::Loop() {
 
@@ -102,6 +104,124 @@ void myNEUTAnalysis::Loop() {
 	// ----------------------------------------------------------------------------------------------------------------------------------------
 
 	Tools tools;
+
+	//--------------------------------------------------//
+
+	// Now let's get serious with the 2D analysis
+
+	// Ecal in DeltaPT and DeltaAlphaT bins		
+
+	TH1D* TrueECal_InDeltaPTDeltaAlphaTTwoDPlot[TwoDNBinsDeltaPT][TwoDNBinsDeltaAlphaT];	
+
+	//--------------------------------------------------//
+
+	// DeltaAlphaT in DeltaPT slices
+
+	TH1D* TrueDeltaAlphaT_InDeltaPTTwoDPlot[TwoDNBinsDeltaPT];	
+
+	//--------------------------------------------------//
+
+	// DeltaPhiT in DeltaPT slices
+
+	TH1D* TrueDeltaPhiT_InDeltaPTTwoDPlot[TwoDNBinsDeltaPT];	
+
+	//--------------------------------------------------//
+
+	// DeltaPn in DeltaPT slices
+
+	TH1D* TrueDeltaPn_InDeltaPTTwoDPlot[TwoDNBinsDeltaPT];	
+
+	//--------------------------------------------------//	
+
+	for (int WhichDeltaPT = 0; WhichDeltaPT < TwoDNBinsDeltaPT; WhichDeltaPT++) {
+
+		//------------------------------//
+
+		// DeltaAlphaT in DeltaPT slices
+
+		TString DeltaAlphaTTwoDInDeltaPTLabel = "DeltaAlphaT_DeltaPT_"+tools.ConvertToString(TwoDArrayNBinsDeltaPT[WhichDeltaPT])+"To"+tools.ConvertToString(TwoDArrayNBinsDeltaPT[WhichDeltaPT+1])+"Plot";			
+
+		TrueDeltaAlphaT_InDeltaPTTwoDPlot[WhichDeltaPT] = new TH1D("True"+DeltaAlphaTTwoDInDeltaPTLabel,LabelXAxisDeltaAlphaT,TwoDArrayNBinsDeltaAlphaTInDeltaPTSlices[WhichDeltaPT].size()-1,&TwoDArrayNBinsDeltaAlphaTInDeltaPTSlices[WhichDeltaPT][0]);
+
+		//------------------------------//
+
+		// DeltaPhiT in DeltaPT slices
+
+		TString DeltaPhiTTwoDInDeltaPTLabel = "DeltaPhiT_DeltaPT_"+tools.ConvertToString(TwoDArrayNBinsDeltaPT[WhichDeltaPT])+"To"+tools.ConvertToString(TwoDArrayNBinsDeltaPT[WhichDeltaPT+1])+"Plot";			
+		TrueDeltaPhiT_InDeltaPTTwoDPlot[WhichDeltaPT] = new TH1D("True"+DeltaPhiTTwoDInDeltaPTLabel,LabelXAxisDeltaPhiT,TwoDArrayNBinsDeltaPhiTInDeltaPTSlices[WhichDeltaPT].size()-1,&TwoDArrayNBinsDeltaPhiTInDeltaPTSlices[WhichDeltaPT][0]);	
+
+		//------------------------------//
+
+		// DeltaPn in DeltaPT slices
+
+		TString DeltaPnTwoDInDeltaPTLabel = "DeltaPn_DeltaPT_"+tools.ConvertToString(TwoDArrayNBinsDeltaPT[WhichDeltaPT])+"To"+tools.ConvertToString(TwoDArrayNBinsDeltaPT[WhichDeltaPT+1])+"Plot";			
+		TrueDeltaPn_InDeltaPTTwoDPlot[WhichDeltaPT] = new TH1D("True"+DeltaPnTwoDInDeltaPTLabel,LabelXAxisDeltaPn,TwoDArrayNBinsDeltaPnInDeltaPTSlices[WhichDeltaPT].size()-1,&TwoDArrayNBinsDeltaPnInDeltaPTSlices[WhichDeltaPT][0]);	
+
+		//------------------------------//
+
+		for (int WhichDeltaAlphaT = 0; WhichDeltaAlphaT < TwoDNBinsDeltaAlphaT; WhichDeltaAlphaT++) {	
+
+			TString ECalTwoDInDeltaPTDeltaAlphaTLabel = "ECal_DeltaPT_"+tools.ConvertToString(TwoDArrayNBinsDeltaPT[WhichDeltaPT])+"To"+tools.ConvertToString(TwoDArrayNBinsDeltaPT[WhichDeltaPT+1])+"_DeltaAlphaT_"+tools.ConvertToString(TwoDArrayNBinsDeltaAlphaT[WhichDeltaAlphaT])+"To"+tools.ConvertToString(TwoDArrayNBinsDeltaAlphaT[WhichDeltaAlphaT+1])+"Plot";
+			TrueECal_InDeltaPTDeltaAlphaTTwoDPlot[WhichDeltaPT][WhichDeltaAlphaT] = new TH1D("True"+ECalTwoDInDeltaPTDeltaAlphaTLabel,LabelXAxisECal,TwoDArrayNBinsECalInDeltaPTDeltaAlphaTSlices[WhichDeltaPT][WhichDeltaAlphaT].size()-1,&TwoDArrayNBinsECalInDeltaPTDeltaAlphaTSlices[WhichDeltaPT][WhichDeltaAlphaT][0]);
+
+		}
+
+	}
+
+	//--------------------------------------------------//
+
+	// DeltaAlphaT in muon cos theta slices
+
+	TH1D* TrueDeltaAlphaT_InMuonCosThetaTwoDPlot[TwoDNBinsMuonCosTheta];
+
+	// DeltaPT in muon cos theta slices
+
+	TH1D* TrueDeltaPT_InMuonCosThetaTwoDPlot[TwoDNBinsMuonCosTheta];	
+
+	// Pmu in muon cos theta slices
+
+	TH1D* TrueMuonMomentum_InMuonCosThetaTwoDPlot[TwoDNBinsMuonCosTheta];
+
+	for (int WhichMuonCosTheta = 0; WhichMuonCosTheta < TwoDNBinsMuonCosTheta; WhichMuonCosTheta++) {
+
+		TString DeltaAlphaTTwoDInMuonCosThetaLabel = "DeltaAlphaT_MuonCosTheta_"+tools.ConvertToString(TwoDArrayNBinsMuonCosTheta[WhichMuonCosTheta])+"To"+tools.ConvertToString(TwoDArrayNBinsMuonCosTheta[WhichMuonCosTheta+1])+"Plot";			
+		TrueDeltaAlphaT_InMuonCosThetaTwoDPlot[WhichMuonCosTheta] = new TH1D("True"+DeltaAlphaTTwoDInMuonCosThetaLabel,LabelXAxisDeltaAlphaT,TwoDArrayNBinsDeltaAlphaTInMuonCosThetaSlices[WhichMuonCosTheta].size()-1,&TwoDArrayNBinsDeltaAlphaTInMuonCosThetaSlices[WhichMuonCosTheta][0]);
+
+		TString DeltaPTTwoDInMuonCosThetaLabel = "DeltaPT_MuonCosTheta_"+tools.ConvertToString(TwoDArrayNBinsMuonCosTheta[WhichMuonCosTheta])+"To"+tools.ConvertToString(TwoDArrayNBinsMuonCosTheta[WhichMuonCosTheta+1])+"Plot";			
+		TrueDeltaPT_InMuonCosThetaTwoDPlot[WhichMuonCosTheta] = new TH1D("True"+DeltaPTTwoDInMuonCosThetaLabel,LabelXAxisDeltaPT,TwoDArrayNBinsDeltaPTInMuonCosThetaSlices[WhichMuonCosTheta].size()-1,&TwoDArrayNBinsDeltaPTInMuonCosThetaSlices[WhichMuonCosTheta][0]);		
+
+		TString MuonMomentumTwoDInMuonCosThetaLabel = "MuonMomentum_MuonCosTheta_"+tools.ConvertToString(TwoDArrayNBinsMuonCosTheta[WhichMuonCosTheta])+"To"+tools.ConvertToString(TwoDArrayNBinsMuonCosTheta[WhichMuonCosTheta+1])+"Plot";			
+		TrueMuonMomentum_InMuonCosThetaTwoDPlot[WhichMuonCosTheta] = new TH1D("True"+MuonMomentumTwoDInMuonCosThetaLabel,LabelXAxisMuonMomentum,TwoDArrayNBinsMuonMomentumInMuonCosThetaSlices[WhichMuonCosTheta].size()-1,&TwoDArrayNBinsMuonMomentumInMuonCosThetaSlices[WhichMuonCosTheta][0]);
+
+	}	
+
+	//--------------------------------------------------//
+
+	// Pp in proton cos theta slices
+
+	TH1D* TrueProtonMomentum_InProtonCosThetaTwoDPlot[TwoDNBinsProtonCosTheta];
+
+	for (int WhichProtonCosTheta = 0; WhichProtonCosTheta < TwoDNBinsProtonCosTheta; WhichProtonCosTheta++) {
+
+		TString ProtonMomentumTwoDInProtonCosThetaLabel = "ProtonMomentum_ProtonCosTheta_"+tools.ConvertToString(TwoDArrayNBinsProtonCosTheta[WhichProtonCosTheta])+"To"+tools.ConvertToString(TwoDArrayNBinsProtonCosTheta[WhichProtonCosTheta+1])+"Plot";			
+		TrueProtonMomentum_InProtonCosThetaTwoDPlot[WhichProtonCosTheta] = new TH1D("True"+ProtonMomentumTwoDInProtonCosThetaLabel,LabelXAxisProtonMomentum,NBinsProtonMomentum,ArrayNBinsProtonMomentum);	
+
+	}
+
+	//--------------------------------------------------//
+
+	// DeltaPty in DeltaPtx slices
+
+	TH1D* TrueDeltaPty_InDeltaPtxTwoDPlot[TwoDNBinsDeltaPtx];
+
+	for (int WhichDeltaPtx = 0; WhichDeltaPtx < TwoDNBinsDeltaPtx; WhichDeltaPtx++) {
+
+		TString DeltaPtyTwoDInDeltaPtxLabel = "DeltaPty_DeltaPtx_"+tools.ConvertToString(TwoDArrayNBinsDeltaPtx[WhichDeltaPtx])+"To"+tools.ConvertToString(TwoDArrayNBinsDeltaPtx[WhichDeltaPtx+1])+"Plot";			
+		TrueDeltaPty_InDeltaPtxTwoDPlot[WhichDeltaPtx] = new TH1D("True"+DeltaPtyTwoDInDeltaPtxLabel,LabelXAxisDeltaPty,NBinsDeltaPty,ArrayNBinsDeltaPty);	
+
+	}	
+
+	//--------------------------------------------------//	
 
 	// ---------------------------------------------------------------------------------------------------------------------------------	
 	
@@ -302,6 +422,32 @@ void myNEUTAnalysis::Loop() {
 //			    && TrueQ2 > ArrayNBinsQ2[0] && TrueQ2 < ArrayNBinsQ2[NBinsQ2]			    
 
 			) {
+
+				//----------------------------------------//
+
+				// Indices for 2D analysis
+
+				int DeltaPTTwoDIndex = tools.ReturnIndex(PTmissMomentum, TwoDArrayNBinsDeltaPT);
+				int DeltaAlphaTTwoDIndex = tools.ReturnIndex(TrueDeltaAlphaT, TwoDArrayNBinsDeltaAlphaT);
+				int MuonCosThetaTwoDIndex = tools.ReturnIndex(MuonCosTheta, TwoDArrayNBinsMuonCosTheta);
+				int ProtonCosThetaTwoDIndex = tools.ReturnIndex(ProtonCosTheta, TwoDArrayNBinsProtonCosTheta);
+				int DeltaPtxTwoDIndex = tools.ReturnIndex(TruePtx, TwoDArrayNBinsDeltaPtx);								
+
+				//----------------------------------------//
+
+				// 2D analysis	
+
+				TrueECal_InDeltaPTDeltaAlphaTTwoDPlot[DeltaPTTwoDIndex][DeltaAlphaTTwoDIndex]->Fill(ECal,weight);
+				TrueDeltaAlphaT_InDeltaPTTwoDPlot[DeltaPTTwoDIndex]->Fill(TrueDeltaAlphaT,weight);
+				TrueDeltaPhiT_InDeltaPTTwoDPlot[DeltaPTTwoDIndex]->Fill(TrueDeltaPhiT,weight);	
+				TrueDeltaPn_InDeltaPTTwoDPlot[DeltaPTTwoDIndex]->Fill(TruePn,weight);
+				TrueDeltaAlphaT_InMuonCosThetaTwoDPlot[MuonCosThetaTwoDIndex]->Fill(TrueDeltaAlphaT,weight);
+				TrueDeltaPT_InMuonCosThetaTwoDPlot[MuonCosThetaTwoDIndex]->Fill(PTmissMomentum,weight);
+				TrueMuonMomentum_InMuonCosThetaTwoDPlot[MuonCosThetaTwoDIndex]->Fill(MuonMomentum,weight);
+				TrueProtonMomentum_InProtonCosThetaTwoDPlot[ProtonCosThetaTwoDIndex]->Fill(ProtonMomentum,weight);
+				TrueDeltaPty_InDeltaPtxTwoDPlot[DeltaPtxTwoDIndex]->Fill(TruePty,weight);	
+
+				//----------------------------------------//							
 			
 				TrueDeltaPTPlot->Fill(PTmissMomentum,weight);
 				TrueDeltaAlphaTPlot->Fill(TrueDeltaAlphaT,weight);
@@ -412,50 +558,50 @@ void myNEUTAnalysis::Loop() {
 
 	// Division by bin width to get the cross sections
 	
-	Reweight(TrueMuonMomentumPlot,ScalingFactor);
-	Reweight(TrueMuonPhiPlot,ScalingFactor);
-	Reweight(TrueMuonCosThetaPlot,ScalingFactor);
-	Reweight(TrueMuonCosThetaSingleBinPlot,2*ScalingFactor);
+	tools.Reweight(TrueMuonMomentumPlot,ScalingFactor);
+	tools.Reweight(TrueMuonPhiPlot,ScalingFactor);
+	tools.Reweight(TrueMuonCosThetaPlot,ScalingFactor);
+	tools.Reweight(TrueMuonCosThetaSingleBinPlot,2*ScalingFactor);
 
-	Reweight(TrueProtonMomentumPlot,ScalingFactor);
-	Reweight(TrueProtonPhiPlot,ScalingFactor);
-	Reweight(TrueProtonCosThetaPlot,ScalingFactor);
+	tools.Reweight(TrueProtonMomentumPlot,ScalingFactor);
+	tools.Reweight(TrueProtonPhiPlot,ScalingFactor);
+	tools.Reweight(TrueProtonCosThetaPlot,ScalingFactor);
 
-	Reweight(TrueECalPlot,ScalingFactor);
-	Reweight(TrueECalLowPTPlot,ScalingFactor);
-	Reweight(TrueECalMidPTPlot,ScalingFactor);
-	Reweight(TrueECalHighPTPlot,ScalingFactor);
+	tools.Reweight(TrueECalPlot,ScalingFactor);
+	tools.Reweight(TrueECalLowPTPlot,ScalingFactor);
+	tools.Reweight(TrueECalMidPTPlot,ScalingFactor);
+	tools.Reweight(TrueECalHighPTPlot,ScalingFactor);
 
-	Reweight(TrueEQEPlot,ScalingFactor);	
-	Reweight(TrueQ2Plot,ScalingFactor);
+	tools.Reweight(TrueEQEPlot,ScalingFactor);	
+	tools.Reweight(TrueQ2Plot,ScalingFactor);
 
-	Reweight(TrueCCQEMuonMomentumPlot,ScalingFactor);
-	Reweight(TrueCCQEMuonPhiPlot,ScalingFactor);
-	Reweight(TrueCCQEMuonCosThetaPlot,ScalingFactor);
+	tools.Reweight(TrueCCQEMuonMomentumPlot,ScalingFactor);
+	tools.Reweight(TrueCCQEMuonPhiPlot,ScalingFactor);
+	tools.Reweight(TrueCCQEMuonCosThetaPlot,ScalingFactor);
 
-	Reweight(TrueCCQEProtonMomentumPlot,ScalingFactor);
-	Reweight(TrueCCQEProtonPhiPlot,ScalingFactor);
-	Reweight(TrueCCQEProtonCosThetaPlot,ScalingFactor);
+	tools.Reweight(TrueCCQEProtonMomentumPlot,ScalingFactor);
+	tools.Reweight(TrueCCQEProtonPhiPlot,ScalingFactor);
+	tools.Reweight(TrueCCQEProtonCosThetaPlot,ScalingFactor);
 
-	Reweight(TrueCCQEECalPlot,ScalingFactor);
-	Reweight(TrueCCQEQ2Plot,ScalingFactor);	
+	tools.Reweight(TrueCCQEECalPlot,ScalingFactor);
+	tools.Reweight(TrueCCQEQ2Plot,ScalingFactor);	
 	
-	Reweight(TrueDeltaPTPlot,ScalingFactor);
-	Reweight(TrueDeltaAlphaTPlot,ScalingFactor);
-	Reweight(TrueDeltaPhiTPlot,ScalingFactor);
+	tools.Reweight(TrueDeltaPTPlot,ScalingFactor);
+	tools.Reweight(TrueDeltaAlphaTPlot,ScalingFactor);
+	tools.Reweight(TrueDeltaPhiTPlot,ScalingFactor);
 
-	Reweight(TruekMissPlot,ScalingFactor);
-	Reweight(TruePMissPlot,ScalingFactor);
-	Reweight(TruePMissMinusPlot,ScalingFactor);
+	tools.Reweight(TruekMissPlot,ScalingFactor);
+	tools.Reweight(TruePMissPlot,ScalingFactor);
+	tools.Reweight(TruePMissMinusPlot,ScalingFactor);
 
-	Reweight(TrueDeltaPLPlot,ScalingFactor);
-	Reweight(TrueDeltaPnPlot,ScalingFactor);
-	Reweight(TrueDeltaPtxPlot,ScalingFactor);
-	Reweight(TrueDeltaPtyPlot,ScalingFactor);
-	Reweight(TrueAPlot,ScalingFactor);
+	tools.Reweight(TrueDeltaPLPlot,ScalingFactor);
+	tools.Reweight(TrueDeltaPnPlot,ScalingFactor);
+	tools.Reweight(TrueDeltaPtxPlot,ScalingFactor);
+	tools.Reweight(TrueDeltaPtyPlot,ScalingFactor);
+	tools.Reweight(TrueAPlot,ScalingFactor);
 
-	Reweight2D(TrueCosThetaMuPmuPlot,ScalingFactor);
-	Reweight2D(TrueCosThetaPPpPlot,ScalingFactor);
+	tools.Reweight2D(TrueCosThetaMuPmuPlot,ScalingFactor);
+	tools.Reweight2D(TrueCosThetaPPpPlot,ScalingFactor);
 	
 	// --------------------------------------------------------------------------------------------------------------------------------------------	
 	
