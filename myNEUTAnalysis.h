@@ -18,6 +18,10 @@ TString FileName = GeneratorName;
 TString FullName = Path + FileName;
 
 class myNEUTAnalysis {
+
+private:
+	TFile* fFile;
+
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
@@ -190,6 +194,7 @@ myNEUTAnalysis::myNEUTAnalysis(TTree *tree) : fChain(0)
          f = new TFile(FullName+".root");
       }
       f->GetObject("FlatTree_VARS",tree);
+      fFile = f;
 
    }
    Init(tree);
