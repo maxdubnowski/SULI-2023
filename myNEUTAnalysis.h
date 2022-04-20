@@ -10,17 +10,12 @@
 
 using namespace Constants;
 
-TString GeneratorName = "NEUT";
-
-TString Path = "mySamples/";
-TString FileName = GeneratorName;
-
-TString FullName = Path + FileName;
-
 class myNEUTAnalysis {
 
 private:
 	TFile* fFile;
+	TString fInputFile;
+	TString fOutputFile;
 
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
@@ -170,7 +165,7 @@ public :
    TBranch        *b_flagNC1pi0;   //!
    TBranch        *b_flagCC0piMINERvA;   //!
 
-   myNEUTAnalysis(TTree *tree=0);
+   myNEUTAnalysis(TString in, TString out, TTree *tree=0);
    virtual ~myNEUTAnalysis();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
@@ -184,10 +179,13 @@ public :
 #endif
 
 #ifdef myNEUTAnalysis_cxx
-myNEUTAnalysis::myNEUTAnalysis(TTree *tree) : fChain(0) 
+myNEUTAnalysis::myNEUTAnalysis(TString InputFile, TString OutputFile, TTree *tree) : fChain(0) 
 {
-// if parameter tree is not specified (or zero), connect the file
-// used to generate this class and read the Tree.
+
+	fInputFile = InputFile;
+	fOutputFile = OutputFile;
+	TString FullName = "mySamples/" + fInputFile;
+
    if (tree == 0) {
       TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(FullName+".root");
       if (!f || !f->IsOpen()) {
