@@ -9,7 +9,9 @@
 	WhichSample.push_back("bnb.ub.num.neut_5_4_0_1_RFG.flat"); WhichName.push_back("NEUTv5401_RFG");	
 //	WhichSample.push_back("bnb.ub.num.neut_5_4_0_1_EffSF.flat"); WhichName.push_back("NEUTv5401_EffSF");
 	WhichSample.push_back("NuWroCard_CC_Ar_uBFlux_flat"); WhichName.push_back("NuWrov190201_LFG");
-	WhichSample.push_back("NuWroCard_CC_Ar_uBFlux_RFG_flat"); WhichName.push_back("NuWrov190201_RFG");		
+	WhichSample.push_back("NuWroCard_CC_Ar_uBFlux_RFG_flat"); WhichName.push_back("NuWrov190201_RFG");
+	WhichSample.push_back("NuWro_NoFSI.flat"); WhichName.push_back("NuWrov190201_LFG_NoFSI");
+	WhichSample.push_back("NEUT_NoFSI.flat"); WhichName.push_back("NEUTv5401_LFG_NoFSI");				
 
 	//----------------------------------------//
 
