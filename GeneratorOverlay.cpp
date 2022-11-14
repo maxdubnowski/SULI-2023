@@ -112,7 +112,7 @@ void GeneratorOverlay() {
 			Histos[iSample]->GetYaxis()->SetLabelFont(FontStyle);
 			Histos[iSample]->GetYaxis()->SetNdivisions(6);
 			Histos[iSample]->GetYaxis()->SetLabelSize(TextSize);
-			Histos[iSample]->GetYaxis()->SetTitle("# Events");
+			Histos[iSample]->GetYaxis()->SetTitle("Cross Section [10^{-38} cm^{2}/Ar]");
 			Histos[iSample]->GetYaxis()->SetTitleSize(TextSize);
 			Histos[iSample]->GetYaxis()->SetTitleOffset(1.3);
 			Histos[iSample]->GetYaxis()->SetTickSize(0);
