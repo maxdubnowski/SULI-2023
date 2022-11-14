@@ -5,7 +5,7 @@
 	//----------------------------------------//
 
 	WhichSample.push_back("GENIE_v3_0_6_G18_10a_02a.flat"); WhichName.push_back("GENIE");
-	WhichSample.push_back("NEUT.flat"); WhichName.push_back("NEUT.flat");
+	WhichSample.push_back("NEUT.flat"); WhichName.push_back("NEUT");
 	WhichSample.push_back("NuWro.flat"); WhichName.push_back("NuWro");
 	WhichSample.push_back("GiBUU.flat"); WhichName.push_back("GiBUU");				
 

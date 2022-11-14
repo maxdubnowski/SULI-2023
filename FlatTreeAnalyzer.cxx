@@ -39,7 +39,7 @@ void FlatTreeAnalyzer::Loop() {
 
         // Output file
 
-	TString FileNameAndPath = "OutputFiles/STVAnalysis_"+fOutputFile+".root";
+	TString FileNameAndPath = "OutputFiles/FlatTreeAnalyzerOutput_"+fOutputFile+".root";
 	TFile* file = new TFile(FileNameAndPath,"recreate");
 
 	std::cout << std::endl << "------------------------------------------------" << std::endl << std::endl;
@@ -50,8 +50,6 @@ void FlatTreeAnalyzer::Loop() {
 	// Plot declaration
 
 	TH1D* TrueMuonCosThetaPlot[NInte];
-
-	//--------------------------------------------------//
 
 	// Loop over the interaction processes
 
@@ -69,12 +67,12 @@ void FlatTreeAnalyzer::Loop() {
 
 	// Counters
 
-	int CounterSTVlikeEventsPassedSelection = 0;
-	int CounterSTVlikeQEEventsPassedSelection = 0;
-	int CounterSTVlikeMECEventsPassedSelection = 0;
-	int CounterSTVlikeRESEventsPassedSelection = 0;
-	int CounterSTVlikeDISEventsPassedSelection = 0;
-	int CounterSTVlikeCOHEventsPassedSelection = 0;	
+	int CounterEventsPassedSelection = 0;
+	int CounterQEEventsPassedSelection = 0;
+	int CounterMECEventsPassedSelection = 0;
+	int CounterRESEventsPassedSelection = 0;
+	int CounterDISEventsPassedSelection = 0;
+	int CounterCOHEventsPassedSelection = 0;	
 
 	//----------------------------------------//
 	
@@ -94,16 +92,17 @@ void FlatTreeAnalyzer::Loop() {
 
 	  //----------------------------------------//	
 
+	  // Signal definition
+
 	  if (PDGLep != 13) { continue; } // make sure that we have only a muon in the final state
 	  if (cc != 1) { continue; } // make sure that we have only CC interactions		
-
-	  //----------------------------------------//	
 
 	  int ProtonTagging = 0, ChargedPionTagging = 0, NeutralPionTagging = 0, MuonTagging = 0;
 	  vector <int> ProtonID; ProtonID.clear();
 	  vector <int> MuonID; MuonID.clear();		
 
 	  // Example selection with CC1p0pi (units in GeV/c)
+	  // Loop over final state particles
 
 	  for (int i = 0; i < nfsp; i++) {
 		
@@ -137,8 +136,6 @@ void FlatTreeAnalyzer::Loop() {
 
 	  } // End of the loop over the final state particles
 
-	  //----------------------------------------//	
-
 	  // If the signal definition is not satisfied, continue
 
 	  if ( ProtonTagging != 1 || ChargedPionTagging != 0 || NeutralPionTagging != 0 || MuonTagging !=1) { continue; }
@@ -147,19 +144,19 @@ void FlatTreeAnalyzer::Loop() {
 
 	  // https://arxiv.org/pdf/2106.15809.pdf
 
-	  CounterSTVlikeEventsPassedSelection++;
+	  CounterEventsPassedSelection++;
 	
 	  // Classify the events based on the interaction type
 
 	  int genie_mode = -1.;
-	  if (TMath::Abs(Mode) == 1) { CounterSTVlikeQEEventsPassedSelection++; genie_mode = 1; } // QE
-	  else if (TMath::Abs(Mode) == 2) { CounterSTVlikeMECEventsPassedSelection++; genie_mode = 2; } // MEC
+	  if (TMath::Abs(Mode) == 1) { CounterQEEventsPassedSelection++; genie_mode = 1; } // QE
+	  else if (TMath::Abs(Mode) == 2) { CounterMECEventsPassedSelection++; genie_mode = 2; } // MEC
 	  else if (
 		   TMath::Abs(Mode) == 11 || TMath::Abs(Mode) == 12 || TMath::Abs(Mode) == 13 ||
 		   TMath::Abs(Mode) == 17 || TMath::Abs(Mode) == 22 || TMath::Abs(Mode) == 23
-		   ) { CounterSTVlikeRESEventsPassedSelection++; genie_mode = 3; } // RES
-	  else if (TMath::Abs(Mode) == 21 || TMath::Abs(Mode) == 26) { CounterSTVlikeDISEventsPassedSelection++; genie_mode = 4; } // DIS
-	  else if (TMath::Abs(Mode) == 16) { CounterSTVlikeCOHEventsPassedSelection++; genie_mode = 5;} // COH
+		   ) { CounterRESEventsPassedSelection++; genie_mode = 3; } // RES
+	  else if (TMath::Abs(Mode) == 21 || TMath::Abs(Mode) == 26) { CounterDISEventsPassedSelection++; genie_mode = 4; } // DIS
+	  else if (TMath::Abs(Mode) == 16) { CounterCOHEventsPassedSelection++; genie_mode = 5;} // COH
 	  else { continue; }  
 
 	  // Feb 8 2022: Only case that is not covered is 15 = diffractive
@@ -183,22 +180,22 @@ void FlatTreeAnalyzer::Loop() {
 	//----------------------------------------//	
 
 	std::cout << "Percetage of events passing the selection cuts = " << 
-	double(CounterSTVlikeEventsPassedSelection)/ double(nentries)*100. << " %" << std::endl; std::cout << std::endl;
+	double(CounterEventsPassedSelection)/ double(nentries)*100. << " %" << std::endl; std::cout << std::endl;
 
 	std::cout << "Success percetage in selecting QE events = " << 
-	double(CounterSTVlikeQEEventsPassedSelection)/ double(CounterSTVlikeEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;
+	double(CounterQEEventsPassedSelection)/ double(CounterEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;
 
 	std::cout << "Success percetage in selecting MEC events = " << 
-	double(CounterSTVlikeMECEventsPassedSelection)/ double(CounterSTVlikeEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;
+	double(CounterMECEventsPassedSelection)/ double(CounterEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;
 
 	std::cout << "Success percetage in selecting RES events = " << 
-	double(CounterSTVlikeRESEventsPassedSelection)/ double(CounterSTVlikeEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;
+	double(CounterRESEventsPassedSelection)/ double(CounterEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;
 
 	std::cout << "Success percetage in selecting DIS events = " << 
-	double(CounterSTVlikeDISEventsPassedSelection)/ double(CounterSTVlikeEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;
+	double(CounterDISEventsPassedSelection)/ double(CounterEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;
 
 	std::cout << "Success percetage in selecting COH events = " << 
-	double(CounterSTVlikeCOHEventsPassedSelection)/ double(CounterSTVlikeEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;	
+	double(CounterCOHEventsPassedSelection)/ double(CounterEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;	
 
 	//----------------------------------------//	
 	//----------------------------------------//	
