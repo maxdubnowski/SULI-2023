@@ -34,7 +34,12 @@ int main (){
 
   cout << "Yours is: " <<endl;
   printMovie(yours);
-  
+
+  movies *pmovie;
+  pmovie = &mine;
+
+  cout << "Pointer Movie title: " << pmovie->title << endl;
+  cout << "Pointer Movie cost: " << (*pmovie).title << endl; //equivalent to above method
 
   return 0;
 }
