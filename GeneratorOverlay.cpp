@@ -22,7 +22,7 @@ void GeneratorOverlay() {
 	int FontStyle = 132;
 	double TextSize = 0.06;			
 
-	TString OutFilePath = "/uboone/app/users/apapadop/BuildEventGenerators/FlatTreeAnalyzer/OutputFiles/";
+	TString OutFilePath = "/uboone/app/users/maxd/BuildEventGenerators/FlatTreeAnalyzer/OutputFiles/";
 
 	//------------------------------//
 
@@ -54,9 +54,30 @@ void GeneratorOverlay() {
 	// Plots to overlay
 
 	std::vector<TString> PlotNames;
+	///*
+	//
+	int NNeut = 6;
+	for (int neut =0; neut < NNeut; neut++){
+	  /*
+	  PlotNames.push_back(Form("TrueMuonCosThetaPlot_Neutrons%d",neut));
+	  PlotNames.push_back(Form("TrueDeltaPtPlot_Neutrons%d",neut));
+	  PlotNames.push_back(Form("MECTrueDeltaPtPlot_Neutrons%d",neut));
+	  PlotNames.push_back(Form("QETrueDeltaPtPlot_Neutrons%d",neut));
+	  PlotNames.push_back(Form("RESTrueDeltaPtPlot_Neutrons%d",neut));
+	  PlotNames.push_back(Form("DISTrueDeltaPtPlot_Neutrons%d",neut));
+	  PlotNames.push_back(Form("COHTrueDeltaPtPlot_Neutrons%d",neut));
+	//}
 
-	PlotNames.push_back("TrueMuonCosThetaPlot");
-
+	  */
+	PlotNames.push_back(Form("TrueNeutronMultiplicityPlot_Neutrons%d", neut));
+	/*	
+	PlotNames.push_back("QETrueNeutronMultiplicityPlot");	
+	PlotNames.push_back("MECTrueNeutronMultiplicityPlot");
+	PlotNames.push_back("RESTrueNeutronMultiplicityPlot");
+	PlotNames.push_back("DISTrueNeutronMultiplicityPlot");
+	PlotNames.push_back("COHTrueNeutronMultiplicityPlot");
+	*/
+	}
 	const int NPlots = PlotNames.size();
 
 	//------------------------------//	
