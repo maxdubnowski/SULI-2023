@@ -33,9 +33,11 @@ void MultiplicityOverlay() {
 	Labels.push_back("GENIE");
 	Colors.push_back(kBlue+2);	
 
+
 	Names.push_back(OutFilePath+"FlatTreeAnalyzerOutput_NuWro.root"); 
 	Labels.push_back("NuWro");
 	Colors.push_back(kRed+1);
+
 
 	Names.push_back(OutFilePath+"FlatTreeAnalyzerOutput_NEUT.root"); 
 	Labels.push_back("NEUT");
@@ -45,20 +47,20 @@ void MultiplicityOverlay() {
 	Labels.push_back("GiBUU");
 	Colors.push_back(kGreen+1);			
 
+
 	const int NSamples = Names.size();
 	std::vector<TFile*> Files; Files.resize(NSamples);
 
-	//------------------------------//
+
 
 	// Plots to overlay
-
 	std::vector<TString> PlotNames;
 	///*
-	//
+
 	int NNeut = 2;
 	for (int neut =0; neut < NNeut; neut++){
-	  PlotNames.push_back(Form("TruePMissingCosThetaPlot_Neutrons%d", neut));
-	  PlotNames.push_back(Form("TruePMissingMagnitudePlot_Neutrons%d", neut));
+	  //PlotNames.push_back(Form("TruePMissingCosThetaPlot_Neutrons%d",neut));
+	   PlotNames.push_back(Form("TruePMissingMagnitudePlot_Neutrons%d",neut));
 
 	  /*
 	  PlotNames.push_back(Form("TrueMuonCosThetaPlot_Neutrons%d",neut));
@@ -87,7 +89,8 @@ void MultiplicityOverlay() {
 	} 
 
 
-
+	//NPlot - number of different canvas
+	//NSamples - Number of evt generators
 
 	// Loop over the plots to be compared
 	for (int iPlot = 0; iPlot < NPlots; iPlot++) {

@@ -2,6 +2,7 @@
 #include "FlatTreeAnalyzer.h"
 
 #include <TH1D.h>
+#include <TH2D.h>
 #include <TFile.h>
 #include <TString.h>
 #include <TMath.h>
@@ -57,16 +58,20 @@ void FlatTreeAnalyzer::Loop() {
 
 	TH1D* TruePMissingCosThetaPlot[2]; //Finding the difference between the two multiplicities
 	TH1D* TruePMissingMagnitudePlot[2];
+	TH2D* RecoCosThetaNeutronPlot[NInte];
+	TH2D* RecoMagnitudeNeutronPlot[NInte];
 
 
 	// Initialize the different plots
 	for (int imult =0; imult<2; imult++){
-	  TruePMissingCosThetaPlot[imult] = new TH1D(Form("TruePMissingCosThetaPlot_Neutrons%d", imult), ";cos(#theta_{#mu})", 10,-1,1);
+	  TruePMissingCosThetaPlot[imult] = new TH1D(Form("TruePMissingCosThetaPlot_Neutrons%d", imult), ";cos(#theta_{#miss})", 10,-1,1);
 	  TruePMissingMagnitudePlot[imult] = new TH1D(Form("TruePMissingMagnitudePlot_Neutrons%d",imult) , ";p_{missing} GeV/c", 20,0,1);
 	}
 
 	
 	for (int inte = 0; inte < NInte; inte++) {
+	  RecoCosThetaNeutronPlot[inte] = new TH2D(InteractionLabels[inte] + "RecoCosThetaNeutronPlot", ";true cos(#theta_{n});reco cos(#theta_{n})" , 20,-1,1,20,-1,1);
+	  RecoMagnitudeNeutronPlot[inte] = new TH2D(InteractionLabels[inte] + "RecoMagnitudeNeutronPlot", ";true Momentum Magnitude;reco Momentum Magnitude" , 20,0,1.5,20,0,1.5);
 	  for (int neut =0; neut < NNeut; neut++){
 
 	    TrueMuonCosThetaPlot[inte][neut] = new TH1D(InteractionLabels[inte]+"TrueMuonCosThetaPlot_Neutrons"+to_string(neut),";cos(#theta_{#mu})",10,-1.,1.);
@@ -175,8 +180,8 @@ void FlatTreeAnalyzer::Loop() {
 	  double pMissingMagnitude = pMissing.Mag();
 	  double pMissingDirection = pMissing.CosTheta();
 	  
-
-
+	 
+	  
 	  // https://arxiv.org/pdf/2106.15809.pdf   :)
 
 
@@ -209,6 +214,10 @@ void FlatTreeAnalyzer::Loop() {
 	  if (NeutronTagging ==1){
 	    TruePMissingCosThetaPlot[1]->Fill(pMissingDirection, weight); //1 Neutrons
 	    TruePMissingMagnitudePlot[1]->Fill(pMissingMagnitude, weight); //1 Neutrons
+	    TVector3 neutron_vector(px[NeutronID[0]], py[NeutronID[0]], pz[NeutronID[0]]);   
+	    RecoCosThetaNeutronPlot[genie_mode]->Fill(neutron_vector.CosTheta(), pMissingDirection, weight);
+	    RecoMagnitudeNeutronPlot[genie_mode]->Fill(neutron_vector.Mag(), pMissingMagnitude, weight);
+
 	  }
 	  
 
@@ -332,11 +341,11 @@ void FlatTreeAnalyzer::Loop() {
 	for (int inte = 0; inte < NInte; inte++) {
 	  for (int neut =0; neut < NNeut; neut++){
 	
-	    /*
+	    
 		Reweight(TrueMuonCosThetaPlot[inte][neut]);
 		Reweight(TrueDeltaPtPlot[inte][neut]);
 		Reweight(TrueNeutronMultiplicityPlot[inte][neut]);
-	    */
+	    
 	
 	  }
 	} // End of the loop over the interaction processes		
