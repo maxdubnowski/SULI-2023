@@ -55,15 +55,23 @@ void GeneratorOverlay2D() {
 
 	std::vector<TString> PlotNames;
 
-	//PlotNames.push_back("RecoMagnitudeNeutronPlot");
-	PlotNames.push_back("QERecoMagnitudeNeutronPlot");
-	PlotNames.push_back("MECRecoMagnitudeNeutronPlot");
-	PlotNames.push_back("RESRecoMagnitudeNeutronPlot");
+
+	PlotNames.push_back("QERecoMagnitudeLeadingNeutronPlot");
+	PlotNames.push_back("MECRecoMagnitudeLeadingNeutronPlot");
+	PlotNames.push_back("RESRecoMagnitudeLeadingNeutronPlot");
 	
-	//PlotNames.push_back("RecoCosThetaNeutronPlot");
-	PlotNames.push_back("QERecoCosThetaNeutronPlot");
-	PlotNames.push_back("MECRecoCosThetaNeutronPlot");
-	PlotNames.push_back("RESRecoCosThetaNeutronPlot");
+	PlotNames.push_back("QERecoCosThetaLeadingNeutronPlot");
+	PlotNames.push_back("MECRecoCosThetaLeadingNeutronPlot");
+	PlotNames.push_back("RESRecoCosThetaLeadingNeutronPlot");
+
+	//PlotNames.push_back("QERecoMagnitudeNeutronPlot");
+	//PlotNames.push_back("MECRecoMagnitudeNeutronPlot");
+	//PlotNames.push_back("RESRecoMagnitudeNeutronPlot");
+	
+
+	// PlotNames.push_back("QERecoCosThetaNeutronPlot"); 
+	// PlotNames.push_back("MECRecoCosThetaNeutronPlot");
+	//PlotNames.push_back("RESRecoCosThetaNeutronPlot");
 	//PlotNames.push_back("DISRecoCosThetaNeutronPlot");
 	//PlotNames.push_back("COHRecoCosThetaNeutronPlot");
 	

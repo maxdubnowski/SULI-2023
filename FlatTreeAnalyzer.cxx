@@ -60,7 +60,8 @@ void FlatTreeAnalyzer::Loop() {
 	TH1D* TruePMissingMagnitudePlot[2];
 	TH2D* RecoCosThetaNeutronPlot[NInte];
 	TH2D* RecoMagnitudeNeutronPlot[NInte];
-
+	TH2D* RecoMagnitudeLeadingNeutronPlot[NInte];
+	TH2D* RecoCosThetaLeadingNeutronPlot[NInte];
 
 	// Initialize the different plots
 	for (int imult =0; imult<2; imult++){
@@ -70,8 +71,13 @@ void FlatTreeAnalyzer::Loop() {
 
 	
 	for (int inte = 0; inte < NInte; inte++) {
-	  RecoCosThetaNeutronPlot[inte] = new TH2D(InteractionLabels[inte] + "RecoCosThetaNeutronPlot", ";true cos(#theta_{n});reco cos(#theta_{n})" , 20,-1,1,20,-1,1);
+	  RecoCosThetaNeutronPlot[inte] = new TH2D(InteractionLabels[inte] + "RecoCosThetaNeutronPlot", ";true cos(#theta_{n});reco cos(#theta_{miss})" , 20,-1,1,20,-1,1);
 	  RecoMagnitudeNeutronPlot[inte] = new TH2D(InteractionLabels[inte] + "RecoMagnitudeNeutronPlot", ";true Momentum Magnitude;reco Momentum Magnitude" , 20,0,1.5,20,0,1.5);
+	  
+	  RecoCosThetaLeadingNeutronPlot[inte] = new TH2D(InteractionLabels[inte] + "RecoCosThetaLeadingNeutronPlot", ";true cos(#theta_{n});reco cos(#theta_{mis})" , 20,-1,1,20,-1,1);
+	  RecoMagnitudeLeadingNeutronPlot[inte] = new TH2D(InteractionLabels[inte] + "RecoMagnitudeLeadingNeutronPlot", ";true Momentum Magnitude;reco Momentum Magnitude" , 20,0,1.5,20,0,1.5);
+	 
+
 	  for (int neut =0; neut < NNeut; neut++){
 
 	    TrueMuonCosThetaPlot[inte][neut] = new TH1D(InteractionLabels[inte]+"TrueMuonCosThetaPlot_Neutrons"+to_string(neut),";cos(#theta_{#mu})",10,-1.,1.);
@@ -218,6 +224,15 @@ void FlatTreeAnalyzer::Loop() {
 	    RecoCosThetaNeutronPlot[genie_mode]->Fill(neutron_vector.CosTheta(), pMissingDirection, weight);
 	    RecoMagnitudeNeutronPlot[genie_mode]->Fill(neutron_vector.Mag(), pMissingMagnitude, weight);
 
+	  }
+
+
+	  if (NeutronTagging ==2){
+	    TVector3 neutron1_vector(px[NeutronID[0]], py[NeutronID[0]], pz[NeutronID[0]]);
+	    TVector3 neutron2_vector(px[NeutronID[1]], py[NeutronID[1]], pz[NeutronID[1]]);
+	    TVector3 leadingNeutron = (neutron1_vector.Mag() > neutron2_vector.Mag()) ? neutron1_vector : neutron2_vector;
+	    RecoCosThetaLeadingNeutronPlot[genie_mode]->Fill(leadingNeutron.CosTheta(), pMissingDirection, weight);
+	    RecoMagnitudeLeadingNeutronPlot[genie_mode]->Fill(leadingNeutron.Mag(), pMissingMagnitude, weight);   
 	  }
 	  
 
