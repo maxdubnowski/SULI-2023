@@ -54,20 +54,26 @@ void GeneratorOverlay2D() {
 	// Plots to overlay
 
 	std::vector<TString> PlotNames;
+	int NNeut =6;
+	for (int neut=0; neut < NNeut; neut++){
+      	  PlotNames.push_back(Form("QETruePMissingMagVsCosPlot_Neutrons%d",neut));
+	  PlotNames.push_back(Form("MECTruePMissingMagVsCosPlot_Neutrons%d",neut));
+	  PlotNames.push_back(Form("RESTruePMissingMagVsCosPlot_Neutrons%d",neut));
+	}
 
-
-	PlotNames.push_back("QERecoMagnitudeLeadingNeutronPlot");
-	PlotNames.push_back("MECRecoMagnitudeLeadingNeutronPlot");
-	PlotNames.push_back("RESRecoMagnitudeLeadingNeutronPlot");
+	// PlotNames.push_back("QERecoMagnitudeLeadingNeutronPlot");
+	// PlotNames.push_back("MECRecoMagnitudeLeadingNeutronPlot");
+	// PlotNames.push_back("RESRecoMagnitudeLeadingNeutronPlot");
 	
-	PlotNames.push_back("QERecoCosThetaLeadingNeutronPlot");
-	PlotNames.push_back("MECRecoCosThetaLeadingNeutronPlot");
-	PlotNames.push_back("RESRecoCosThetaLeadingNeutronPlot");
+	// PlotNames.push_back("QERecoCosThetaLeadingNeutronPlot");
+	// PlotNames.push_back("MECRecoCosThetaLeadingNeutronPlot");
+	// PlotNames.push_back("RESRecoCosThetaLeadingNeutronPlot");
+
+
 
 	//PlotNames.push_back("QERecoMagnitudeNeutronPlot");
 	//PlotNames.push_back("MECRecoMagnitudeNeutronPlot");
-	//PlotNames.push_back("RESRecoMagnitudeNeutronPlot");
-	
+	//PlotNames.push_back("RESRecoMagnitudeNeutronPlot");	
 
 	// PlotNames.push_back("QERecoCosThetaNeutronPlot"); 
 	// PlotNames.push_back("MECRecoCosThetaNeutronPlot");
@@ -97,25 +103,27 @@ void GeneratorOverlay2D() {
 		// Loop over the samples to open the files and to get the corresponding plot
 
 		std::vector<TH2D*> Histos; Histos.resize(NSamples);
-
+		TString CanvasName = "Canvas_" + PlotNames[iPlot];
+		TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,1024,768);
+		PlotCanvas->Divide(2,2);
+		PlotCanvas->cd(1);
+		PlotCanvas->SetTopMargin(0.12);
+		PlotCanvas->SetLeftMargin(0.15);
+		PlotCanvas->SetBottomMargin(0.15);		
+		PlotCanvas->Draw();	
+		
 		for (int iSample = 0; iSample < NSamples; iSample++) {	
 		  
-		  TString CanvasName = "Canvas_" + PlotNames[iPlot] +Labels[iSample];
-		  TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,1024,768);
-		  PlotCanvas->cd();
-		  PlotCanvas->SetTopMargin(0.12);
-		  PlotCanvas->SetLeftMargin(0.15);
-		  PlotCanvas->SetBottomMargin(0.15);		
-		  PlotCanvas->Draw();	
-		
 		  
-		  Histos[iSample] = (TH2D*)(Files[iSample]->Get(PlotNames[iPlot]));
+      		  Histos[iSample] = (TH2D*)(Files[iSample]->Get(PlotNames[iPlot]));
 		  
 		  // Histos[iSample]->SetLineWidth(4);
 		  // Histos[iSample]->SetLineColor( Colors.at(iSample) );	
-		  
+		  Histos[iSample]->SetTitle(Labels[iSample]);
 		  Histos[iSample]->GetXaxis()->SetTitleFont(FontStyle);
+		  Histos[iSample]->GetXaxis()->SetTitle("cos(#theta_{miss}");
 		  Histos[iSample]->GetXaxis()->SetLabelFont(FontStyle);
+		  
 		  // Histos[iSample]->GetXaxis()->SetNdivisions(8);
 		  Histos[iSample]->GetXaxis()->SetLabelSize(TextSize);
 		  Histos[iSample]->GetXaxis()->SetTitleSize(TextSize);	
@@ -123,20 +131,22 @@ void GeneratorOverlay2D() {
 		  Histos[iSample]->GetXaxis()->CenterTitle();						
 		  
 		  Histos[iSample]->GetYaxis()->SetTitleFont(FontStyle);
+		  Histos[iSample]->GetYaxis()->SetTitle("Magnitude p_{missing}");
 		  Histos[iSample]->GetYaxis()->SetLabelFont(FontStyle);
 		  //Histos[iSample]->GetYaxis()->SetNdivisions(6);
+
 		  Histos[iSample]->GetYaxis()->SetLabelSize(TextSize);
 		  Histos[iSample]->GetYaxis()->SetTitleSize(TextSize);
 		  Histos[iSample]->GetYaxis()->SetTitleOffset(1.3);
 		  Histos[iSample]->GetYaxis()->SetTickSize(0);
 		  Histos[iSample]->GetYaxis()->CenterTitle();	
 		  
-		  PlotCanvas->SetLogz();
+		  PlotCanvas->cd(iSample+1)->SetLogz();
 		  //double imax = TMath::Max(Histos[iSample]->GetMaximum(),Histos[0]->GetMaximum());			
 		  //Histos[iSample]->GetYaxis()->SetRangeUser(0.,1.1*imax);
 		  //Histos[0]->GetYaxis()->SetRangeUser(0.,1.1*imax);			
 		  
-		  PlotCanvas->cd();
+		  PlotCanvas->cd(iSample+1);
 		  Histos[iSample]->Draw("colz");
 		  //Histos[0]->Draw("colz");	
 		  
