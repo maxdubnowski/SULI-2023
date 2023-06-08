@@ -33,6 +33,10 @@ void MultiplicityOverlay() {
 	Labels.push_back("GENIE");
 	Colors.push_back(kBlue+2);	
 
+	Names.push_back(OutFilePath+"FlatTreeAnalyzerOutput_GENIE_noFSI.root"); 
+	Labels.push_back("GENIE-noFSI");
+	Colors.push_back(kCyan);	
+
 
 	Names.push_back(OutFilePath+"FlatTreeAnalyzerOutput_NuWro.root"); 
 	Labels.push_back("NuWro");
@@ -71,7 +75,7 @@ void MultiplicityOverlay() {
 	  PlotNames.push_back(Form("DISTrueDeltaPtPlot_Neutrons%d",neut));
 	  PlotNames.push_back(Form("COHTrueDeltaPtPlot_Neutrons%d",neut));
 	  	
-	  PlotNames.push_back(Form("TrueNeutronMultiplicityPlot_Neutrons%d", neut));
+	  
 	  
 	  PlotNames.push_back("QETrueNeutronMultiplicityPlot");	
 	  PlotNames.push_back("MECTrueNeutronMultiplicityPlot");
@@ -80,6 +84,7 @@ void MultiplicityOverlay() {
 	  PlotNames.push_back("COHTrueNeutronMultiplicityPlot");
 	  */
 	}
+	PlotNames.push_back("TrueNeutronMultiplicityPlot");
 	const int NPlots = PlotNames.size();
 
 

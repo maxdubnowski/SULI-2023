@@ -21,6 +21,7 @@ void GeneratorOverlay() {
 
 	int FontStyle = 132;
 	double TextSize = 0.06;			
+	double LegendTextSize = 0.04;
 
 	TString OutFilePath = "/uboone/app/users/maxd/BuildEventGenerators/FlatTreeAnalyzer/OutputFiles/";
 
@@ -34,6 +35,10 @@ void GeneratorOverlay() {
 	Labels.push_back("GENIE");
 	Colors.push_back(kBlue+2);	
 
+	Names.push_back(OutFilePath+"FlatTreeAnalyzerOutput_GENIE_noFSI.root"); 
+	Labels.push_back("GENIE-NoFSI");
+	Colors.push_back(kCyan);	
+	
 	Names.push_back(OutFilePath+"FlatTreeAnalyzerOutput_NuWro.root"); 
 	Labels.push_back("NuWro");
 	Colors.push_back(kRed+1);
@@ -58,26 +63,26 @@ void GeneratorOverlay() {
 	//
 	int NNeut = 6;
 	for (int neut =0; neut < NNeut; neut++){
-	  /*
-	  PlotNames.push_back(Form("TrueMuonCosThetaPlot_Neutrons%d",neut));
-	  PlotNames.push_back(Form("TrueDeltaPtPlot_Neutrons%d",neut));
-	  PlotNames.push_back(Form("MECTrueDeltaPtPlot_Neutrons%d",neut));
-	  PlotNames.push_back(Form("QETrueDeltaPtPlot_Neutrons%d",neut));
-	  PlotNames.push_back(Form("RESTrueDeltaPtPlot_Neutrons%d",neut));
-	  PlotNames.push_back(Form("DISTrueDeltaPtPlot_Neutrons%d",neut));
-	  PlotNames.push_back(Form("COHTrueDeltaPtPlot_Neutrons%d",neut));
-	//}
-
-	  */
-	PlotNames.push_back(Form("TrueNeutronMultiplicityPlot_Neutrons%d", neut));
-	/*	
-	PlotNames.push_back("QETrueNeutronMultiplicityPlot");	
-	PlotNames.push_back("MECTrueNeutronMultiplicityPlot");
-	PlotNames.push_back("RESTrueNeutronMultiplicityPlot");
-	PlotNames.push_back("DISTrueNeutronMultiplicityPlot");
-	PlotNames.push_back("COHTrueNeutronMultiplicityPlot");
-	*/
+	  
+	  // PlotNames.push_back(Form("TrueMuonCosThetaPlot_Neutrons%d",neut));
+	  // PlotNames.push_back(Form("TrueDeltaPtPlot_Neutrons%d",neut));
+	  // PlotNames.push_back(Form("MECTrueDeltaPtPlot_Neutrons%d",neut));
+	  // PlotNames.push_back(Form("QETrueDeltaPtPlot_Neutrons%d",neut));
+	  // PlotNames.push_back(Form("RESTrueDeltaPtPlot_Neutrons%d",neut));
+	  // PlotNames.push_back(Form("DISTrueDeltaPtPlot_Neutrons%d",neut));
+	  // PlotNames.push_back(Form("COHTrueDeltaPtPlot_Neutrons%d",neut));
 	}
+
+	  
+	  PlotNames.push_back("TrueNeutronMultiplicityPlot");
+		
+	  PlotNames.push_back("QETrueNeutronMultiplicityPlot");	
+	  PlotNames.push_back("MECTrueNeutronMultiplicityPlot");
+	  PlotNames.push_back("RESTrueNeutronMultiplicityPlot");
+	  PlotNames.push_back("DISTrueNeutronMultiplicityPlot");
+	  PlotNames.push_back("COHTrueNeutronMultiplicityPlot");
+	
+
 	const int NPlots = PlotNames.size();
 
 	//------------------------------//	
@@ -104,10 +109,10 @@ void GeneratorOverlay() {
 		PlotCanvas->SetBottomMargin(0.15);		
 		PlotCanvas->Draw();	
 
-		TLegend* leg = new TLegend(0.2,0.7,0.55,0.83);
+		TLegend* leg  = new TLegend(0.2,0.7,0.55,0.83);
 		leg->SetBorderSize(0);
 		leg->SetNColumns(2);
-		leg->SetTextSize(TextSize);	
+		leg->SetTextSize(LegendTextSize); 
 		leg->SetTextFont(FontStyle);						
 
 		// Loop over the samples to open the files and to get the corresponding plot
@@ -149,8 +154,7 @@ void GeneratorOverlay() {
 
 			leg->AddEntry(Histos[iSample],Labels[iSample],"l");
 			
-			//----------------------------------------//					
-
+		
 		} // End of the loop over the samples grabing the plots	
 
 		PlotCanvas->cd();
@@ -158,6 +162,5 @@ void GeneratorOverlay() {
 
 	} // End of the loop over the plots
 
-	//------------------------------//
 
 } // End of the program

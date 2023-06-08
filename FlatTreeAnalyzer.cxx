@@ -52,9 +52,9 @@ void FlatTreeAnalyzer::Loop() {
 
 	// Plot declaration
 
-	TH1D* TrueMuonCosThetaPlot[NInte][NNeut];
-	TH1D* TrueDeltaPtPlot[NInte][NNeut];
-	TH1D* TrueNeutronMultiplicityPlot[NInte][NNeut];
+	TH1D* TrueMuonCosThetaPlot[NInte][NNeut]; //Finding the cos(theta) of the muon 
+	TH1D* TrueDeltaPtPlot[NInte][NNeut]; //Find the transverse missing momentum plotted against many multiplicities and all neutrino interaction modes
+	TH1D* TrueNeutronMultiplicityPlot[NInte]; //Find the Neutron Multiplicity of each interaction
 	TH1D* TruePMissingCosThetaPlot[2]; //Finding the difference between the two multiplicities
 	TH1D* TruePMissingMagnitudePlot[2];
 	TH2D* RecoCosThetaNeutronPlot[NInte];
@@ -78,12 +78,13 @@ void FlatTreeAnalyzer::Loop() {
 	  RecoCosThetaLeadingNeutronPlot[inte] = new TH2D(InteractionLabels[inte] + "RecoCosThetaLeadingNeutronPlot", ";true cos(#theta_{n});reco cos(#theta_{mis})" , 20,-1,1,20,-1,1);
 	  RecoMagnitudeLeadingNeutronPlot[inte] = new TH2D(InteractionLabels[inte] + "RecoMagnitudeLeadingNeutronPlot", ";true Momentum Magnitude;reco Momentum Magnitude" , 20,0,1.5,20,0,1.5);
 	 
+	  TrueNeutronMultiplicityPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueNeutronMultiplicityPlot",";Number of Neutrons",6,-0.5,5.5);
 
 	  for (int neut =0; neut < NNeut; neut++){
 
 	    TrueMuonCosThetaPlot[inte][neut] = new TH1D(InteractionLabels[inte]+"TrueMuonCosThetaPlot_Neutrons"+to_string(neut),";cos(#theta_{#mu})",10,-1.,1.);
 	    TrueDeltaPtPlot[inte][neut] = new TH1D(InteractionLabels[inte]+"TrueDeltaPtPlot_Neutrons"+to_string(neut),";#delta p_{t}",20,0.,1.);
-	    TrueNeutronMultiplicityPlot[inte][neut] = new TH1D(InteractionLabels[inte]+"TrueNeutronMultiplicityPlot_Neutrons"+to_string(neut),";Number of Neutrons",6,-0.5,5.5);
+	    
 	    TruePMissingMagVsCosPlot[inte][neut] = new TH2D(InteractionLabels[inte]+"TruePMissingMagVsCosPlot_Neutrons"+to_string(neut), ";cos(#theta_{miss});Magnitude of p_{missing}", 20, -1, 1, 20, 0, 1.5);
 
 	  }
@@ -164,11 +165,21 @@ void FlatTreeAnalyzer::Loop() {
 	    }
 	  } // End of the loop over the final state particles
 
+
+
+
+
+
 	  // If the signal definition is not satisfied, continue
 	  if ( ProtonTagging != 1 || ChargedPionTagging != 0 || NeutralPionTagging != 0 || MuonTagging !=1) { continue; }
-	
-
+	  CounterEventsPassedSelection++;
+	  // https://arxiv.org/pdf/2106.15809.pdf   :)  
 	  
+
+
+
+
+
 	  // -- Creating the Transverse Missing Momentum Between Proton and Muon -- //
 	  TLorentzVector proton4Vector(px[ProtonID[0]], py[ProtonID[0]], pz[ProtonID[0]], E[ProtonID[0]]);
 	  TLorentzVector muon4Vector(px[MuonID[0]], py[MuonID[0]], pz[MuonID[0]], E[MuonID[0]]);
@@ -187,12 +198,12 @@ void FlatTreeAnalyzer::Loop() {
 	  
 	 
 	  
-	  // https://arxiv.org/pdf/2106.15809.pdf   :)
 
 
 
 
-	  CounterEventsPassedSelection++;
+
+	 
 	
 	  // Classify the events based on the interaction type
 	  int genie_mode = -1.;
@@ -205,14 +216,13 @@ void FlatTreeAnalyzer::Loop() {
 	  else if (TMath::Abs(Mode) == 21 || TMath::Abs(Mode) == 26) { CounterDISEventsPassedSelection++; genie_mode = 4; } // DIS
 	  else if (TMath::Abs(Mode) == 16) { CounterCOHEventsPassedSelection++; genie_mode = 5;} // COH
 	  else { continue; }  
-
 	  // Feb 8 2022: Only case that is not covered is 15 = diffractive
 
 
-	  //Fill in the various histograms
 
 
-	  
+
+	  //Fill in the various histograms  
 	  if (NeutronTagging ==0){
 	    TruePMissingCosThetaPlot[0]->Fill(pMissingDirection, weight); //0 Neutrons
 	    TruePMissingMagnitudePlot[0]->Fill(pMissingMagnitude, weight); //0 Neutrons
@@ -227,108 +237,86 @@ void FlatTreeAnalyzer::Loop() {
 
 	  }
 
-
 	  if (NeutronTagging ==2){
 	    TVector3 neutron1_vector(px[NeutronID[0]], py[NeutronID[0]], pz[NeutronID[0]]);
 	    TVector3 neutron2_vector(px[NeutronID[1]], py[NeutronID[1]], pz[NeutronID[1]]);
 	    TVector3 leadingNeutron = (neutron1_vector.Mag() > neutron2_vector.Mag()) ? neutron1_vector : neutron2_vector;
 	    RecoCosThetaLeadingNeutronPlot[genie_mode]->Fill(leadingNeutron.CosTheta(), pMissingDirection, weight);
 	    RecoMagnitudeLeadingNeutronPlot[genie_mode]->Fill(leadingNeutron.Mag(), pMissingMagnitude, weight);   
-	  }
-	  
-	  
+	  }  
 	  
 	  // filling in the histo regardless of interaction mode
-	  /*
-	    TrueMuonCosThetaPlot[0][neut]->Fill(CosLep,weight);
-	    TrueDeltaPtPlot[0][neut]->Fill(transP,weight);
-	    TrueNeutronMultiplicityPlot[0][neut]->Fill(NeutronTagging,weight);
+	  TrueNeutronMultiplicityPlot[0]->Fill(NeutronTagging,weight);
       
-	    // filling in the histo based on the interaction mode
-	    
-	    TrueMuonCosThetaPlot[genie_mode][neut]->Fill(CosLep,weight);
-	    TrueDeltaPtPlot[genie_mode][neut]->Fill(transP,weight);
-	    TrueNeutronMultiplicityPlot[genie_mode][neut]->Fill(NeutronTagging,weight);
-	    //----------------------------------------//
-	    //----------------------------------------//
-
-
-
-
+	  // filling in the histo based on the interaction mode
+	  TrueNeutronMultiplicityPlot[genie_mode]->Fill(NeutronTagging,weight);
+	  
 	  //Filling in Neutron Tagging plots
 	    
 	  if (NeutronTagging ==0){
 	    TrueMuonCosThetaPlot[0][NeutronTagging]->Fill(CosLep,weight);
 	    TrueDeltaPtPlot[0][NeutronTagging]->Fill(transP,weight);
-	    TrueNeutronMultiplicityPlot[0][NeutronTagging]->Fill(NeutronTagging,weight);
-	      	    
+	  	      	    
 	    TrueMuonCosThetaPlot[genie_mode][NeutronTagging]->Fill(CosLep,weight);
 	    TrueDeltaPtPlot[genie_mode][NeutronTagging]->Fill(transP,weight);
-	    TrueNeutronMultiplicityPlot[genie_mode][NeutronTagging]->Fill(NeutronTagging,weight);
 	  }
 
 
 	  else if (NeutronTagging == 1){
-
 	    TrueMuonCosThetaPlot[0][NeutronTagging]->Fill(CosLep,weight);
 	    TrueDeltaPtPlot[0][NeutronTagging]->Fill(transP,weight);
-	    TrueNeutronMultiplicityPlot[0][NeutronTagging]->Fill(NeutronTagging,weight);
-	    
+	  	    
 	    TrueMuonCosThetaPlot[genie_mode][NeutronTagging]->Fill(CosLep,weight);
 	    TrueDeltaPtPlot[genie_mode][NeutronTagging]->Fill(transP,weight);
-	    TrueNeutronMultiplicityPlot[genie_mode][NeutronTagging]->Fill(NeutronTagging,weight);
 	  }
 
 
 	  else if (NeutronTagging == 2){
-
 	    TrueMuonCosThetaPlot[0][NeutronTagging]->Fill(CosLep,weight);
 	    TrueDeltaPtPlot[0][NeutronTagging]->Fill(transP,weight);
-	    TrueNeutronMultiplicityPlot[0][NeutronTagging]->Fill(NeutronTagging,weight);
-	    
+	  	    
 	    TrueMuonCosThetaPlot[genie_mode][NeutronTagging]->Fill(CosLep,weight);
 	    TrueDeltaPtPlot[genie_mode][NeutronTagging]->Fill(transP,weight);
-	    TrueNeutronMultiplicityPlot[genie_mode][NeutronTagging]->Fill(NeutronTagging,weight);
 	  }
 
 
 	  else if (NeutronTagging == 3){
 	    TrueMuonCosThetaPlot[0][NeutronTagging]->Fill(CosLep,weight);
 	    TrueDeltaPtPlot[0][NeutronTagging]->Fill(transP,weight);
-	    TrueNeutronMultiplicityPlot[0][NeutronTagging]->Fill(NeutronTagging,weight);
+	   
 	    
 	    TrueMuonCosThetaPlot[genie_mode][NeutronTagging]->Fill(CosLep,weight);
 	    TrueDeltaPtPlot[genie_mode][NeutronTagging]->Fill(transP,weight);
-	    TrueNeutronMultiplicityPlot[genie_mode][NeutronTagging]->Fill(NeutronTagging,weight);
 	  }
 
 
 	  else if (NeutronTagging == 4){
 	    TrueMuonCosThetaPlot[0][NeutronTagging]->Fill(CosLep,weight);
 	    TrueDeltaPtPlot[0][NeutronTagging]->Fill(transP,weight);
-	    TrueNeutronMultiplicityPlot[0][NeutronTagging]->Fill(NeutronTagging,weight);
-	    
+	   	    
 	    TrueMuonCosThetaPlot[genie_mode][NeutronTagging]->Fill(CosLep,weight);
 	    TrueDeltaPtPlot[genie_mode][NeutronTagging]->Fill(transP,weight);
-	    TrueNeutronMultiplicityPlot[genie_mode][NeutronTagging]->Fill(NeutronTagging,weight);
 	  }
 	  
 
 	  else if (NeutronTagging >=5){
 	    TrueMuonCosThetaPlot[0][NeutronTagging]->Fill(CosLep,weight);
 	    TrueDeltaPtPlot[0][NeutronTagging]->Fill(transP,weight);
-	    TrueNeutronMultiplicityPlot[0][NeutronTagging]->Fill(NeutronTagging,weight);
 	    
-	    TrueMuonCosThetaPlot[genie_mode][NeutronTagging]->Fill(CosLep,weight);
+ 	    TrueMuonCosThetaPlot[genie_mode][NeutronTagging]->Fill(CosLep,weight);
 	    TrueDeltaPtPlot[genie_mode][NeutronTagging]->Fill(transP,weight);
-	    TrueNeutronMultiplicityPlot[genie_mode][NeutronTagging]->Fill(NeutronTagging,weight);
+	    
 	  }
 
-	  */
+	  
 	  if (NeutronTagging >=5) NeutronTagging =5;
 	  TruePMissingMagVsCosPlot[genie_mode][NeutronTagging]->Fill(pMissingDirection, pMissingMagnitude, weight);
-
 	} // End of the loop over the events
+
+
+
+
+
 
 		
 	//Checking Efficiency for the different interaction Mechanisms
@@ -350,21 +338,18 @@ void FlatTreeAnalyzer::Loop() {
 	std::cout << "Success percetage in selecting COH events = " << 
 	double(CounterCOHEventsPassedSelection)/ double(CounterEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;	
 
-	//----------------------------------------//	
-	//----------------------------------------//	
+
+
+
 
 
 	// Division by bin width to get the cross sections	
 	// Loop over the interaction processes and Neutron Multiplicities
 	for (int inte = 0; inte < NInte; inte++) {
+	  Reweight(TrueNeutronMultiplicityPlot[inte]);
 	  for (int neut =0; neut < NNeut; neut++){
-	
-	    
-		Reweight(TrueMuonCosThetaPlot[inte][neut]);
-		Reweight(TrueDeltaPtPlot[inte][neut]);
-		Reweight(TrueNeutronMultiplicityPlot[inte][neut]);
-	    
-	
+	    Reweight(TrueMuonCosThetaPlot[inte][neut]);
+	    Reweight(TrueDeltaPtPlot[inte][neut]);
 	  }
 	} // End of the loop over the interaction processes		
 

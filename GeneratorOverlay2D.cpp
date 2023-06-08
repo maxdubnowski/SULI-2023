@@ -21,6 +21,7 @@ void GeneratorOverlay2D() {
 
 	int FontStyle = 132;
 	double TextSize = 0.06;			
+	double LegendTextSize = 0.03;
 
 	TString OutFilePath = "/uboone/app/users/maxd/BuildEventGenerators/FlatTreeAnalyzer/OutputFiles/";
 
@@ -55,15 +56,15 @@ void GeneratorOverlay2D() {
 
 	std::vector<TString> PlotNames;
 	int NNeut =6;
-	for (int neut=0; neut < NNeut; neut++){
-      	  PlotNames.push_back(Form("QETruePMissingMagVsCosPlot_Neutrons%d",neut));
-	  PlotNames.push_back(Form("MECTruePMissingMagVsCosPlot_Neutrons%d",neut));
-	  PlotNames.push_back(Form("RESTruePMissingMagVsCosPlot_Neutrons%d",neut));
-	}
+	// for (int neut=0; neut < NNeut; neut++){
+      	//   PlotNames.push_back(Form("QETruePMissingMagVsCosPlot_Neutrons%d",neut));
+	//   PlotNames.push_back(Form("MECTruePMissingMagVsCosPlot_Neutrons%d",neut));
+	//   PlotNames.push_back(Form("RESTruePMissingMagVsCosPlot_Neutrons%d",neut));
+	// }
 
-	// PlotNames.push_back("QERecoMagnitudeLeadingNeutronPlot");
-	// PlotNames.push_back("MECRecoMagnitudeLeadingNeutronPlot");
-	// PlotNames.push_back("RESRecoMagnitudeLeadingNeutronPlot");
+	PlotNames.push_back("QERecoMagnitudeLeadingNeutronPlot");
+	PlotNames.push_back("MECRecoMagnitudeLeadingNeutronPlot");
+	PlotNames.push_back("RESRecoMagnitudeLeadingNeutronPlot");
 	
 	// PlotNames.push_back("QERecoCosThetaLeadingNeutronPlot");
 	// PlotNames.push_back("MECRecoCosThetaLeadingNeutronPlot");
@@ -96,69 +97,164 @@ void GeneratorOverlay2D() {
 
 
 
+
+
+
+
+
+
+
+
+
+
 	// Loop over the plots to be compared
+
+
+
+
 	
+	// ------- Mode 1: Plot the Histograms in the same canvas ------- //
+	/*
+
 	for (int iPlot = 0; iPlot < NPlots; iPlot++) {
 
-		// Loop over the samples to open the files and to get the corresponding plot
-
-		std::vector<TH2D*> Histos; Histos.resize(NSamples);
-		TString CanvasName = "Canvas_" + PlotNames[iPlot];
-		TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,1024,768);
-		PlotCanvas->Divide(2,2);
-		PlotCanvas->cd(1);
-		PlotCanvas->SetTopMargin(0.12);
-		PlotCanvas->SetLeftMargin(0.15);
-		PlotCanvas->SetBottomMargin(0.15);		
-		PlotCanvas->Draw();	
-		
-		for (int iSample = 0; iSample < NSamples; iSample++) {	
+	  // Loop over the samples to open the files and to get the corresponding plot
+	  
+	  std::vector<TH2D*> Histos; Histos.resize(NSamples);
+	  TString CanvasName = "Canvas_" + PlotNames[iPlot];
+	  TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,1024,768);
+	  PlotCanvas->Divide(2,2);
+	  PlotCanvas->cd(1);
+	  PlotCanvas->SetTopMargin(0.12);
+	  PlotCanvas->SetLeftMargin(0.15);
+	  PlotCanvas->SetBottomMargin(0.15);		
+	  PlotCanvas->Draw();	
+	  
+	  for (int iSample = 0; iSample < NSamples; iSample++) {	
+	    
+	    
+	    Histos[iSample] = (TH2D*)(Files[iSample]->Get(PlotNames[iPlot]));
 		  
-		  
-      		  Histos[iSample] = (TH2D*)(Files[iSample]->Get(PlotNames[iPlot]));
-		  
-		  // Histos[iSample]->SetLineWidth(4);
-		  // Histos[iSample]->SetLineColor( Colors.at(iSample) );	
-		  Histos[iSample]->SetTitle(Labels[iSample]);
-		  Histos[iSample]->GetXaxis()->SetTitleFont(FontStyle);
-		  Histos[iSample]->GetXaxis()->SetTitle("cos(#theta_{miss}");
-		  Histos[iSample]->GetXaxis()->SetLabelFont(FontStyle);
-		  
-		  // Histos[iSample]->GetXaxis()->SetNdivisions(8);
-		  Histos[iSample]->GetXaxis()->SetLabelSize(TextSize);
-		  Histos[iSample]->GetXaxis()->SetTitleSize(TextSize);	
-		  Histos[iSample]->GetXaxis()->SetTitleOffset(1.1);					
-		  Histos[iSample]->GetXaxis()->CenterTitle();						
-		  
-		  Histos[iSample]->GetYaxis()->SetTitleFont(FontStyle);
-		  Histos[iSample]->GetYaxis()->SetTitle("Magnitude p_{missing}");
-		  Histos[iSample]->GetYaxis()->SetLabelFont(FontStyle);
-		  //Histos[iSample]->GetYaxis()->SetNdivisions(6);
-
-		  Histos[iSample]->GetYaxis()->SetLabelSize(TextSize);
-		  Histos[iSample]->GetYaxis()->SetTitleSize(TextSize);
-		  Histos[iSample]->GetYaxis()->SetTitleOffset(1.3);
-		  Histos[iSample]->GetYaxis()->SetTickSize(0);
-		  Histos[iSample]->GetYaxis()->CenterTitle();	
-		  
-		  PlotCanvas->cd(iSample+1)->SetLogz();
-		  //double imax = TMath::Max(Histos[iSample]->GetMaximum(),Histos[0]->GetMaximum());			
-		  //Histos[iSample]->GetYaxis()->SetRangeUser(0.,1.1*imax);
-		  //Histos[0]->GetYaxis()->SetRangeUser(0.,1.1*imax);			
-		  
-		  PlotCanvas->cd(iSample+1);
-		  Histos[iSample]->Draw("colz");
-		  //Histos[0]->Draw("colz");	
-		  
-		  // leg->AddEntry(Histos[iSample],Labels[iSample],"l");
-		  
-		  PlotCanvas->cd();
-		 
-		} // End of the loop over the samples grabing the plots	
-		
-	
+	    // Histos[iSample]->SetLineWidth(4);
+	    // Histos[iSample]->SetLineColor( Colors.at(iSample) );	
+	    Histos[iSample]->SetTitle(Labels[iSample]);
+	    Histos[iSample]->GetXaxis()->SetTitleFont(FontStyle);
+	    Histos[iSample]->GetXaxis()->SetTitle("cos(#theta_{miss})");
+	    Histos[iSample]->GetXaxis()->SetLabelFont(FontStyle);
+	    
+	    // Histos[iSample]->GetXaxis()->SetNdivisions(8);
+	    Histos[iSample]->GetXaxis()->SetLabelSize(TextSize);
+	    Histos[iSample]->GetXaxis()->SetTitleSize(TextSize);	
+	    Histos[iSample]->GetXaxis()->SetTitleOffset(1.1);					
+	    Histos[iSample]->GetXaxis()->CenterTitle();						
+	    
+	    Histos[iSample]->GetYaxis()->SetTitleFont(FontStyle);
+	    Histos[iSample]->GetYaxis()->SetTitle("Magnitude p_{missing}");
+	    Histos[iSample]->GetYaxis()->SetLabelFont(FontStyle);
+	    //Histos[iSample]->GetYaxis()->SetNdivisions(6);
+	    
+	    Histos[iSample]->GetYaxis()->SetLabelSize(TextSize);
+	    Histos[iSample]->GetYaxis()->SetTitleSize(TextSize);
+	    Histos[iSample]->GetYaxis()->SetTitleOffset(1.3);
+	    Histos[iSample]->GetYaxis()->SetTickSize(0);
+	    Histos[iSample]->GetYaxis()->CenterTitle();	
+	    
+	    PlotCanvas->cd(iSample+1)->SetLogz();
+	    //double imax = TMath::Max(Histos[iSample]->GetMaximum(),Histos[0]->GetMaximum());			
+	    //Histos[iSample]->GetYaxis()->SetRangeUser(0.,1.1*imax);
+	    //Histos[0]->GetYaxis()->SetRangeUser(0.,1.1*imax);			
+	    
+	    PlotCanvas->cd(iSample+1);
+	    Histos[iSample]->Draw("colz");
+	    //Histos[0]->Draw("colz");	
+	    
+	    // leg->AddEntry(Histos[iSample],Labels[iSample],"l");
+	    
+	    PlotCanvas->cd();    
+	  } // End of the loop over the samples grabing the plots	
 	} // End of the loop over the plots
 	
-	//------------------------------//
+	
 
+	*/
+	
+	//--------- End of Mode 1 -----------//
+
+
+
+
+
+	
+	// ----- Mode 2: Plot in different canvas' ----- //
+	
+	///*
+
+	
+	for (int iPlot = 0; iPlot < NPlots; iPlot++) {
+	  // Loop over the samples to open the files and to get the corresponding plot
+	  for (int iSample = 0; iSample < NSamples; iSample++) {	
+	
+	    std::vector<TH2D*> Histos; Histos.resize(NSamples);
+	    TString CanvasName = "Canvas_" + PlotNames[iPlot] + Labels[iSample];
+	    TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,1024,768);
+	    PlotCanvas->cd();
+	    PlotCanvas->SetTopMargin(0.12);
+	    PlotCanvas->SetLeftMargin(0.15);
+	    PlotCanvas->SetBottomMargin(0.15);		
+	    PlotCanvas->Draw();	
+	    
+	    
+	    Histos[iSample] = (TH2D*)(Files[iSample]->Get(PlotNames[iPlot]));
+	    
+	    // Histos[iSample]->SetLineWidth(4);
+	    // Histos[iSample]->SetLineColor( Colors.at(iSample) );	
+	    Histos[iSample]->SetTitle(Labels[iSample]);
+	    Histos[iSample]->GetXaxis()->SetTitleFont(FontStyle);
+	    Histos[iSample]->GetXaxis()->SetTitle("cos(#theta_{miss})");
+	    Histos[iSample]->GetXaxis()->SetLabelFont(FontStyle);
+	    
+	    // Histos[iSample]->GetXaxis()->SetNdivisions(8);
+	    Histos[iSample]->GetXaxis()->SetLabelSize(TextSize);
+	    Histos[iSample]->GetXaxis()->SetTitleSize(TextSize);	
+	    Histos[iSample]->GetXaxis()->SetTitleOffset(1.1);					
+	    Histos[iSample]->GetXaxis()->CenterTitle();						
+	    
+	    Histos[iSample]->GetYaxis()->SetTitleFont(FontStyle);
+	    Histos[iSample]->GetYaxis()->SetTitle("Magnitude p_{missing}");
+	    Histos[iSample]->GetYaxis()->SetLabelFont(FontStyle);
+	    //Histos[iSample]->GetYaxis()->SetNdivisions(6);
+	    
+	    Histos[iSample]->GetYaxis()->SetLabelSize(TextSize);
+	    Histos[iSample]->GetYaxis()->SetTitleSize(TextSize);
+	    Histos[iSample]->GetYaxis()->SetTitleOffset(1.3);
+	    Histos[iSample]->GetYaxis()->SetTickSize(0);
+	    Histos[iSample]->GetYaxis()->CenterTitle();	
+	    
+	    PlotCanvas->cd()->SetLogz();
+	    
+	    
+	    PlotCanvas->cd();
+	    Histos[iSample]->Draw("colz");
+	    //Histos[0]->Draw("colz");	
+	    
+	    // leg->AddEntry(Histos[iSample],Labels[iSample],"l");
+	    
+	    PlotCanvas->cd();	 
+	  } // End of the loop over the samples grabing the plots	
+	} // End of the loop over the plots
+	
+	
+	
+	
+	//*/
+	
+	// ----- End of Mode 2 ----- //
+	
+	
+
+	
+
+	
+	
+	
 } // End of the program
