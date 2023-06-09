@@ -73,13 +73,14 @@ void GeneratorOverlay() {
 	  // PlotNames.push_back(Form("DISTrueDeltaPtPlot_Neutrons%d",neut));
 	  // PlotNames.push_back(Form("COHTrueDeltaPtPlot_Neutrons%d",neut));
 	}
-	
-	PlotNames.push_back("TrueDeltaPtPlotAllNeutrons");
-	PlotNames.push_back("QETrueDeltaPtPlotAllNeutrons");
-	PlotNames.push_back("MECTrueDeltaPtPlotAllNeutrons");
-	PlotNames.push_back("RESTrueDeltaPtPlotAllNeutrons");
-	PlotNames.push_back("DISTrueDeltaPtPlotAllNeutrons");
-	PlotNames.push_back("COHTrueDeltaPtPlotAllNeutrons");
+	PlotNames.push_back("TrueMuonCosThetaPlot");
+
+	// PlotNames.push_back("TrueDeltaPtPlotAllNeutrons");
+	// PlotNames.push_back("QETrueDeltaPtPlotAllNeutrons");
+	// PlotNames.push_back("MECTrueDeltaPtPlotAllNeutrons");
+	// PlotNames.push_back("RESTrueDeltaPtPlotAllNeutrons");
+	// PlotNames.push_back("DISTrueDeltaPtPlotAllNeutrons");
+	// PlotNames.push_back("COHTrueDeltaPtPlotAllNeutrons");
 
 	// PlotNames.push_back("TrueNeutronMultiplicityPlot");
 	

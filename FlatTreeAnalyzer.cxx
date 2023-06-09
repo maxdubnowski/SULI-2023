@@ -52,7 +52,7 @@ void FlatTreeAnalyzer::Loop() {
 
 	// Plot declaration
 
-	TH1D* TrueMuonCosThetaPlot[NInte][NNeut]; //Finding the cos(theta) of the muon 
+	TH1D* TrueMuonCosThetaPlot[NInte][NNeut+1]; //Finding the cos(theta) of the muon 
 	TH1D* TrueDeltaPtPlot[NInte][NNeut+1]; //Find the transverse missing momentum plotted against many multiplicities and all neutrino interaction modes
 	TH1D* TrueNeutronMultiplicityPlot[NInte]; //Find the Neutron Multiplicity of each interaction
 	TH1D* TruePMissingCosThetaPlot[2]; //Finding the difference between the two multiplicities of the missing momentum direction
@@ -87,9 +87,11 @@ void FlatTreeAnalyzer::Loop() {
 	 
 	  TrueNeutronMultiplicityPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueNeutronMultiplicityPlot",";Number of Neutrons",6,-0.5,5.5);
 	  TrueDeltaPtPlot[inte][6] = new TH1D(InteractionLabels[inte] +"TrueDeltaPtPlotAllNeutrons",  ";#deltap_{t}", 20,0,1.);
+	  TrueMuonCosThetaPlot[inte][6] = new TH1D(InteractionLabels[inte]+"TrueMuonCosThetaPlot",";cos(#theta_{#mu})",18,-1.,1.);
+
 	  for (int neut =0; neut < NNeut; neut++){
 
-	    TrueMuonCosThetaPlot[inte][neut] = new TH1D(InteractionLabels[inte]+"TrueMuonCosThetaPlot_Neutrons"+to_string(neut),";cos(#theta_{#mu})",10,-1.,1.);
+	    TrueMuonCosThetaPlot[inte][neut] = new TH1D(InteractionLabels[inte]+"TrueMuonCosThetaPlot_Neutrons"+to_string(neut),";cos(#theta_{#mu})",18,-1.,1.);
 	    TrueDeltaPtPlot[inte][neut] = new TH1D(InteractionLabels[inte]+"TrueDeltaPtPlot_Neutrons"+to_string(neut),";#deltap_{t}",20,0.,1.);
 	    
 	    TruePMissingMagVsCosPlot[inte][neut] = new TH2D(InteractionLabels[inte]+"TruePMissingMagVsCosPlot_Neutrons"+to_string(neut), ";cos(#theta_{miss});Magnitude of p_{missing}", 20, -1, 1, 20, 0, 1.5);
@@ -203,7 +205,7 @@ void FlatTreeAnalyzer::Loop() {
 	  double pMissingMagnitude = pMissing.Mag();
 	  double pMissingDirection = pMissing.CosTheta();
 	  
-	  if (pMissingMagnitude > 0.3 && pMissingDirection >-0.2){ continue; }
+	  // if (pMissingMagnitude > 0.3 && pMissingDirection >-0.2){ continue; }
 	  
 	  
 	  //Creating the reconstructed and true neutrino energy to test how good the calorimetric energy is to recover energy 
@@ -269,7 +271,9 @@ void FlatTreeAnalyzer::Loop() {
 	  TrueDeltaPtPlot[0][6]->Fill(transP,weight);
 	  TrueDeltaPtPlot[genie_mode][6]->Fill(transP,weight);
 	  //Filling in Neutron Tagging plots
-	    
+	  TrueMuonCosThetaPlot[0][6]->Fill(CosLep, weight);
+	  TrueMuonCosThetaPlot[genie_mode][6]->Fill(CosLep, weight);
+
 	  if (NeutronTagging ==0){
 	    TrueMuonCosThetaPlot[0][NeutronTagging]->Fill(CosLep,weight);
 	    TrueDeltaPtPlot[0][NeutronTagging]->Fill(transP,weight);
