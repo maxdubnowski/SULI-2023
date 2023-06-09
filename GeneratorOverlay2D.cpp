@@ -56,15 +56,19 @@ void GeneratorOverlay2D() {
 
 	std::vector<TString> PlotNames;
 	int NNeut =6;
+	PlotNames.push_back("RecoNuMomentumMagnitudeVsTruePlot");
+	PlotNames.push_back("RecoNuMomentumDirectionVsTruePlot");
+
+
 	// for (int neut=0; neut < NNeut; neut++){
       	//   PlotNames.push_back(Form("QETruePMissingMagVsCosPlot_Neutrons%d",neut));
 	//   PlotNames.push_back(Form("MECTruePMissingMagVsCosPlot_Neutrons%d",neut));
 	//   PlotNames.push_back(Form("RESTruePMissingMagVsCosPlot_Neutrons%d",neut));
 	// }
 
-	PlotNames.push_back("QERecoMagnitudeLeadingNeutronPlot");
-	PlotNames.push_back("MECRecoMagnitudeLeadingNeutronPlot");
-	PlotNames.push_back("RESRecoMagnitudeLeadingNeutronPlot");
+	// PlotNames.push_back("QERecoMagnitudeLeadingNeutronPlot");
+	// PlotNames.push_back("MECRecoMagnitudeLeadingNeutronPlot");
+	// PlotNames.push_back("RESRecoMagnitudeLeadingNeutronPlot");
 	
 	// PlotNames.push_back("QERecoCosThetaLeadingNeutronPlot");
 	// PlotNames.push_back("MECRecoCosThetaLeadingNeutronPlot");
@@ -114,7 +118,7 @@ void GeneratorOverlay2D() {
 
 	
 	// ------- Mode 1: Plot the Histograms in the same canvas ------- //
-	/*
+	///*
 
 	for (int iPlot = 0; iPlot < NPlots; iPlot++) {
 
@@ -139,7 +143,7 @@ void GeneratorOverlay2D() {
 	    // Histos[iSample]->SetLineColor( Colors.at(iSample) );	
 	    Histos[iSample]->SetTitle(Labels[iSample]);
 	    Histos[iSample]->GetXaxis()->SetTitleFont(FontStyle);
-	    Histos[iSample]->GetXaxis()->SetTitle("cos(#theta_{miss})");
+	    //Histos[iSample]->GetXaxis()->SetTitle("cos(#theta_{miss})");
 	    Histos[iSample]->GetXaxis()->SetLabelFont(FontStyle);
 	    
 	    // Histos[iSample]->GetXaxis()->SetNdivisions(8);
@@ -149,7 +153,7 @@ void GeneratorOverlay2D() {
 	    Histos[iSample]->GetXaxis()->CenterTitle();						
 	    
 	    Histos[iSample]->GetYaxis()->SetTitleFont(FontStyle);
-	    Histos[iSample]->GetYaxis()->SetTitle("Magnitude p_{missing}");
+	    //Histos[iSample]->GetYaxis()->SetTitle("Magnitude p_{missing}");
 	    Histos[iSample]->GetYaxis()->SetLabelFont(FontStyle);
 	    //Histos[iSample]->GetYaxis()->SetNdivisions(6);
 	    
@@ -176,7 +180,7 @@ void GeneratorOverlay2D() {
 	
 	
 
-	*/
+	//*/
 	
 	//--------- End of Mode 1 -----------//
 
@@ -187,7 +191,7 @@ void GeneratorOverlay2D() {
 	
 	// ----- Mode 2: Plot in different canvas' ----- //
 	
-	///*
+	/*
 
 	
 	for (int iPlot = 0; iPlot < NPlots; iPlot++) {
@@ -210,7 +214,7 @@ void GeneratorOverlay2D() {
 	    // Histos[iSample]->SetLineColor( Colors.at(iSample) );	
 	    Histos[iSample]->SetTitle(Labels[iSample]);
 	    Histos[iSample]->GetXaxis()->SetTitleFont(FontStyle);
-	    Histos[iSample]->GetXaxis()->SetTitle("cos(#theta_{miss})");
+	    //Histos[iSample]->GetXaxis()->SetTitle("cos(#theta_{miss})");
 	    Histos[iSample]->GetXaxis()->SetLabelFont(FontStyle);
 	    
 	    // Histos[iSample]->GetXaxis()->SetNdivisions(8);
@@ -220,7 +224,7 @@ void GeneratorOverlay2D() {
 	    Histos[iSample]->GetXaxis()->CenterTitle();						
 	    
 	    Histos[iSample]->GetYaxis()->SetTitleFont(FontStyle);
-	    Histos[iSample]->GetYaxis()->SetTitle("Magnitude p_{missing}");
+	    //Histos[iSample]->GetYaxis()->SetTitle("Magnitude p_{missing}");
 	    Histos[iSample]->GetYaxis()->SetLabelFont(FontStyle);
 	    //Histos[iSample]->GetYaxis()->SetNdivisions(6);
 	    
@@ -246,7 +250,7 @@ void GeneratorOverlay2D() {
 	
 	
 	
-	//*/
+	*/
 	
 	// ----- End of Mode 2 ----- //
 	
