@@ -104,9 +104,9 @@ FlatTreeAnalyzer::FlatTreeAnalyzer(TString InputFile, TString OutputFile, TTree 
 	TString FullName = "mySamples/" + fInputFile;
 
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(FullName+".root");
+     TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(FullName+".root");
       if (!f || !f->IsOpen()) {
-         f = new TFile(FullName+".root");
+	f = new TFile(FullName+".root");
       }
       f->GetObject("FlatTree_VARS",tree);
       fFile = f;

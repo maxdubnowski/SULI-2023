@@ -1,6 +1,7 @@
 #include <TFile.h>
 #include <TTree.h>
 #include <TString.h>
+#include <TPad.h>
 
 using namespace std;
 
@@ -55,16 +56,16 @@ void GeneratorOverlay2D() {
 	// Plots to overlay
 
 	std::vector<TString> PlotNames;
-	int NNeut =6;
-	PlotNames.push_back("RecoNuMomentumMagnitudeVsTruePlot");
-	PlotNames.push_back("RecoNuMomentumDirectionVsTruePlot");
+	int NNeut =2;
+	//PlotNames.push_back("RecoNuMomentumMagnitudeVsTruePlot");
+	//PlotNames.push_back("RecoNuMomentumDirectionVsTruePlot");
 
 
-	// for (int neut=0; neut < NNeut; neut++){
-      	//   PlotNames.push_back(Form("QETruePMissingMagVsCosPlot_Neutrons%d",neut));
-	//   PlotNames.push_back(Form("MECTruePMissingMagVsCosPlot_Neutrons%d",neut));
-	//   PlotNames.push_back(Form("RESTruePMissingMagVsCosPlot_Neutrons%d",neut));
-	// }
+	 for (int neut=0; neut < NNeut; neut++){
+      	   // PlotNames.push_back(Form("QETruePMissingMagVsCosPlot_Neutrons%d",neut));
+	   // PlotNames.push_back(Form("MECTruePMissingMagVsCosPlot_Neutrons%d",neut));
+	   // PlotNames.push_back(Form("RESTruePMissingMagVsCosPlot_Neutrons%d",neut));
+	 }
 
 	// PlotNames.push_back("QERecoMagnitudeLeadingNeutronPlot");
 	// PlotNames.push_back("MECRecoMagnitudeLeadingNeutronPlot");
@@ -129,9 +130,18 @@ void GeneratorOverlay2D() {
 	  TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,1024,768);
 	  PlotCanvas->Divide(2,2);
 	  PlotCanvas->cd(1);
-	  PlotCanvas->SetTopMargin(0.12);
-	  PlotCanvas->SetLeftMargin(0.15);
-	  PlotCanvas->SetBottomMargin(0.15);		
+
+	  PlotCanvas->cd(2);
+	  PlotCanvas->SetBottomMargin(0.01);		
+
+	  PlotCanvas->cd(3);
+	  PlotCanvas->SetBottomMargin(0.01);		
+
+	  PlotCanvas->cd(4);
+	  PlotCanvas->SetBottomMargin(0.01);		
+	  
+	  
+
 	  PlotCanvas->Draw();	
 	  
 	  for (int iSample = 0; iSample < NSamples; iSample++) {	
@@ -169,13 +179,20 @@ void GeneratorOverlay2D() {
 	    //Histos[0]->GetYaxis()->SetRangeUser(0.,1.1*imax);			
 	    
 	    PlotCanvas->cd(iSample+1);
+	    //gPad->SetTopMargin(0.2);
+	    gPad->SetBottomMargin(0.2);		
+	    gPad->SetLeftMargin(0.2);
 	    Histos[iSample]->Draw("colz");
 	    //Histos[0]->Draw("colz");	
 	    
 	    // leg->AddEntry(Histos[iSample],Labels[iSample],"l");
 	    
 	    PlotCanvas->cd();    
+	    
+
 	  } // End of the loop over the samples grabing the plots	
+	  PlotCanvas->SaveAs("myPlots/"+PlotNames[iPlot]+"_GeneratorOverlayNoNeutronCut.pdf");
+
 	} // End of the loop over the plots
 	
 	
@@ -243,7 +260,10 @@ void GeneratorOverlay2D() {
 	    
 	    // leg->AddEntry(Histos[iSample],Labels[iSample],"l");
 	    
-	    PlotCanvas->cd();	 
+	    
+	    PlotCanvas->cd();
+	    PlotCanvas->SaveAs("myPlots/"+PlotNames[iPlot]+"_GeneratorOverlayNoNeutronCut.pdf");
+	 
 	  } // End of the loop over the samples grabing the plots	
 	} // End of the loop over the plots
 	

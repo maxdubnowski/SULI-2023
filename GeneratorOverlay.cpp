@@ -73,23 +73,36 @@ void GeneratorOverlay() {
 	  // PlotNames.push_back(Form("DISTrueDeltaPtPlot_Neutrons%d",neut));
 	  // PlotNames.push_back(Form("COHTrueDeltaPtPlot_Neutrons%d",neut));
 	}
-	PlotNames.push_back("TrueMuonCosThetaPlot");
+	// PlotNames.push_back("TrueMuonCosThetaPlot");
 
-	// PlotNames.push_back("TrueDeltaPtPlotAllNeutrons");
-	// PlotNames.push_back("QETrueDeltaPtPlotAllNeutrons");
-	// PlotNames.push_back("MECTrueDeltaPtPlotAllNeutrons");
-	// PlotNames.push_back("RESTrueDeltaPtPlotAllNeutrons");
-	// PlotNames.push_back("DISTrueDeltaPtPlotAllNeutrons");
-	// PlotNames.push_back("COHTrueDeltaPtPlotAllNeutrons");
+        // PlotNames.push_back("TrueDeltaPtPlotAllNeutrons");
+	//  PlotNames.push_back("QETrueDeltaPtPlotAllNeutrons");
+	//  PlotNames.push_back("MECTrueDeltaPtPlotAllNeutrons");
+	//  PlotNames.push_back("RESTrueDeltaPtPlotAllNeutrons");
+	//  PlotNames.push_back("DISTrueDeltaPtPlotAllNeutrons");
+	//  PlotNames.push_back("COHTrueDeltaPtPlotAllNeutrons");
 
-	// PlotNames.push_back("TrueNeutronMultiplicityPlot");
+	//  PlotNames.push_back("TrueNeutronMultiplicityPlot");
 	
-	// PlotNames.push_back("QETrueNeutronMultiplicityPlot");	
-	// PlotNames.push_back("MECTrueNeutronMultiplicityPlot");
-	// PlotNames.push_back("RESTrueNeutronMultiplicityPlot");
-	// PlotNames.push_back("DISTrueNeutronMultiplicityPlot");
-	// PlotNames.push_back("COHTrueNeutronMultiplicityPlot");
+	//  PlotNames.push_back("QETrueNeutronMultiplicityPlot");	
+	//  PlotNames.push_back("MECTrueNeutronMultiplicityPlot");
+	//  PlotNames.push_back("RESTrueNeutronMultiplicityPlot");
+	//  PlotNames.push_back("DISTrueNeutronMultiplicityPlot");
+	//  PlotNames.push_back("COHTrueNeutronMultiplicityPlot");
 	
+
+	// PlotNames.push_back("QETruePMissingCosThetaPlot_Neutrons0");
+	// PlotNames.push_back("QETruePMissingCosThetaPlot_Neutrons1");
+	// PlotNames.push_back("QETruePMissingMagnitudePlot_Neutrons0");
+	// PlotNames.push_back("QETruePMissingMagnitudePlot_Neutrons1");
+	
+
+	
+	// PlotNames.push_back("TrueDeltaAlphaTPlot");
+	// PlotNames.push_back("QETrueDeltaAlphaTPlot");
+	// PlotNames.push_back("MECTrueDeltaAlphaTPlot");
+	// PlotNames.push_back("RESTrueDeltaAlphaTPlot");
+	// PlotNames.push_back("DISTrueDexltaAlphaTPlot");
 
 	const int NPlots = PlotNames.size();
 
@@ -113,11 +126,12 @@ void GeneratorOverlay() {
 		TCanvas* PlotCanvas = new TCanvas(CanvasName,CanvasName,205,34,1024,768);
 		PlotCanvas->cd();
 		PlotCanvas->SetTopMargin(0.12);
-		PlotCanvas->SetLeftMargin(0.15);
+		PlotCanvas->SetLeftMargin(0.2);
 		PlotCanvas->SetBottomMargin(0.15);		
 		PlotCanvas->Draw();	
 
-		TLegend* leg  = new TLegend(0.2,0.7,0.55,0.83);
+		TLegend* leg  = new TLegend(0.50,0.7,0.85,0.83); //On the right side of plot
+		//TLegend* leg  = new TLegend(0.2,0.7,0.55,0.83); //Original from Afro
 		leg->SetBorderSize(0);
 		leg->SetNColumns(2);
 		leg->SetTextSize(LegendTextSize); 
@@ -146,7 +160,7 @@ void GeneratorOverlay() {
 			Histos[iSample]->GetYaxis()->SetLabelFont(FontStyle);
 			Histos[iSample]->GetYaxis()->SetNdivisions(6);
 			Histos[iSample]->GetYaxis()->SetLabelSize(TextSize);
-			Histos[iSample]->GetYaxis()->SetTitle("Cross Section [10^{-38} cm^{2}/Ar]");
+			//Histos[iSample]->GetYaxis()->SetTitle("#sigma  [10^{-38} cm^{2}/Ar]");
 			Histos[iSample]->GetYaxis()->SetTitleSize(TextSize);
 			Histos[iSample]->GetYaxis()->SetTitleOffset(1.3);
 			Histos[iSample]->GetYaxis()->SetTickSize(0);
@@ -167,7 +181,7 @@ void GeneratorOverlay() {
 
 		PlotCanvas->cd();
 		leg->Draw();
-
+		PlotCanvas->SaveAs("myPlots/"+PlotNames[iPlot]+"_GeneratorOverlayNoNeutronCut.pdf");
 	} // End of the loop over the plots
 
 
