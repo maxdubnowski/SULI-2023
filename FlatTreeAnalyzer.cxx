@@ -403,7 +403,7 @@ void FlatTreeAnalyzer::Loop() {
 		
 	file->cd();
 	file->Write();
-	fFile->Close();
+	file->Close();
 
 	std::cout << std::endl;
 	std::cout << "File " << FileNameAndPath +" has been created created " << std::endl; 
